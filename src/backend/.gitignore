@@ -1,0 +1,12 @@
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/var/
+/vendor/
+/.vscode/
+/.idea/
+/mysql/
+/mariadb/
+/postgres/
+/caddy/
