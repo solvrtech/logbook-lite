@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ block('title') }}</title>
+    <style>
+        body {
+            background-color: #f1f1f1;
+            font-family: Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            margin: 0;
+            padding: 0;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        .pre-header {
+            display: none;
+            font-size: 1px;
+            color: #ffffff;
+            line-height: 1px;
+            max-height: 0;
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        .body {
+            background-color: #f1f1f1;
+            width: 100%;
+        }
+
+        .container {
+            display: block;
+            margin: 0 auto !important;
+            padding: 0.625rem;
+            max-width: 600px;
+        }
+
+        .content {
+            box-sizing: border-box;
+            display: block;
+            margin: 0 auto;
+            max-width: 600px;
+            padding: 0.625rem;
+        }
+
+        .main {
+            background-color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            text-align: left;
+            color: #434245;
+        }
+
+        .wrapper {
+            box-sizing: border-box;
+            padding: 1.25rem;
+        }
+
+        .content-block {
+            padding-bottom: 0.625rem;
+            padding-top: 0.625rem;
+        }
+
+        .header {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer {
+            clear: both;
+            margin-top: 1rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .footer td,
+        .footer p,
+        .footer span,
+        .footer a {
+            color: #999999;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            mso-table-lspace: 0;
+            mso-table-rspace: 0;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        td {
+            word-break: break-word;
+        }
+
+        p {
+            margin: 0 0 0.8rem;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            line-height: normal;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin: 0 0 0.8rem;
+            font-size: 1.25rem;
+            line-height: normal;
+            font-weight: bold;
+        }
+
+        strong {
+            font-size: 1rem;
+            color: #999;
+            line-height: 1.25rem
+        }
+
+        a {
+            color: #674EA7;
+            text-decoration: underline;
+        }
+
+        ul,
+        ol {
+            margin-top: 0 !important;
+        }
+
+        .btn {
+            box-sizing: border-box;
+            width: auto;
+        }
+
+        .btn {
+            background-color: #ffffff;
+            border: solid 1px #674EA7;
+            border-radius: 5px;
+            box-sizing: border-box;
+            color: #674EA7;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 1rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 0.625rem 0.625rem;
+            text-decoration: none;
+            text-transform: capitalize;
+        }
+
+        .btn-primary {
+            background-color: #674EA7;
+            border-color: #674EA7;
+            color: #ffffff !important;
+        }
+
+        .token {
+            border-radius: 8px;
+            background: #ffffff;
+            text-align: center
+        }
+
+        .token p {
+            background: #ffffff;
+            border: 2px solid #e2e2e2;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            line-height: 1.1;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            font-weight: bold;
+            padding: 0.625rem 2.5rem;
+            letter-spacing: 5px
+        }
+
+        pre {
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+            padding: 0.625rem;
+            margin-top: 0;
+            white-space: pre-wrap;
+            font-family: "Courier New", Courier, monospace;
+        }
+
+        .mb0 {
+            margin-bottom: 0;
+        }
+
+        a,
+        span,
+        td,
+        th {
+            -webkit-font-smoothing: antialiased !important;
+            -moz-osx-font-smoothing: grayscale !important;
+        }
+
+        @media only screen and (max-width: 620px) {
+            .body .container {
+                padding: 0 !important;
+                width: 100% !important;
+            }
+
+            .body .content {
+                padding: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="pre-header">{{ block('title') }}</div>
+<div class="body">
+    <div class="container">
+        <div class="content">
+            <div class="main">
+                <div class="wrapper">
+                    <table class="header" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+                           width="100%">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <h1>{{ block('title') }}</h1>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+
+            <table class="footer" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+                   width="100%">
+                <tbody>
+                <tr>
+                    <td>
+                        <p>Please do not reply to this message.<br> This is an automated message sent by
+                            <a href="{{ logbookUrl }}">LogBook</a>.
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

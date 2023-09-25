@@ -1,0 +1,8 @@
+parameters:
+    # role detail
+    role_info: 'https://solvrtech.id/logbook/docs/#roles'
+
+    # user role
+    roles:
+        - "ROLE_STANDARD"
+        - "ROLE_ADMIN"

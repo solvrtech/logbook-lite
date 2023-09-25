@@ -1,0 +1,20 @@
+parameters:
+    # app type
+    app_type:
+        -   type: 'laravel'
+            url: 'https://solvrtech.id/logbook/docs#iv-1-installing-client-package-in-laravel-apps'
+        -   type: 'symfony'
+            url: 'https://solvrtech.id/logbook/docs#iv-2-installing-client-bundle-in-symfony-apps'
+
+services:
+    Symfony\Component\HttpFoundation\RateLimiter\RequestRateLimiterInterface: '@App\Security\RateLimiter\LoginRateLimiter'
+    security.listener.login_throttling.login: '@App\Security\EventListener\LoginThrottlingListener'
+    mailer.transport_factory:
+        class: 'App\Common\Mail\MailTransport'
+        arguments:
+            - '@App\Common\Mail\SmtpMailTransportFactory'
+    api_exception_subscriber:
+        class: App\EventListener\ApiExceptionSubscriber
+        arguments: [ ]
+        tags:
+            - { name: kernel.event_subscriber }

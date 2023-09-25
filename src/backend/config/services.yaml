@@ -1,0 +1,60 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+imports:
+    # defining roles of user
+    - { resource: roles.yaml }
+
+parameters:
+    # general
+    app_url: '%env(APP_URL)%'
+    app_setup: '%env(APP_SETUP)%'
+    timezone: 'UTC'
+    alert_channel:
+        - 'email'
+
+    # language
+    languages:
+        en: 'English'
+        id: 'Bahasa Indonesia'
+
+    # security
+    jwt_key: '%env(JWT_KEY)%'
+    jwt_access_expiration: '%env(JWT_ACCESS_EXPIRATION)%'
+    jwt_refresh_expiration: '%env(JWT_REFRESH_EXPIRATION)%'
+    cookie_secure: '%env(COOKIE_SECURE)%'
+
+    hmac_secret: '%env(HMAC_SECRET)%'
+
+    # set password expiration in seconds
+    set_password_expiration: 3600
+    set_password_url:
+        url: '%env(APP_URL)%'
+        path: '/set-password'
+
+    # user invitation
+    # set invitation expiration in seconds
+    invitation_expiration: 86400
+    invitation_url:
+        url: '%env(APP_URL)%'
+        path: '/set-account'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: "../src/"
+        exclude:
+            - "../src/DependencyInjection/"
+            - "../src/Entity/"
+            - "../src/Kernel.php"
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones

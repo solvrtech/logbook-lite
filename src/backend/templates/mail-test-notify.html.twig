@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ subject }}{% endblock %}
+
+{% block body %}
+    <table class="wrapper" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+        <tbody>
+        <tr>
+            <td>
+                <p>Use the following verification code to validate your {{ setting }} SMTP settings:</p>
+            </td>
+        </tr>
+        <tr>
+            <td class="token">
+                <p>{{ token }}</p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+        <tbody>
+        <tr>
+            <td>
+                <p>Please ignore this message if you did not make the request.</p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

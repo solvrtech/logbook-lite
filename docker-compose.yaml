@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+    mysql:
+        image: "mysql:8.0"
+        restart: always
+        volumes:
+            - ./mysql:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: logbook
+        ports:
+            - "49158:3306"
+    redis:
+        image: "redis:7.0.5"
+        restart: always
+        ports:
+            - "49157:6379"

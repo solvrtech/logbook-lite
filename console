@@ -1,0 +1,22 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__.'/vendor/autoload.php';
+
+use App\Command\BuildCommand;
+use App\Command\SetupCommand;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\CommandLoader\FactoryCommandLoader;
+
+$commandLoader = new FactoryCommandLoader([
+    'build' => function () {
+        return new BuildCommand();
+    },
+    'setup' => function () {
+        return new SetupCommand();
+    },
+]);
+
+$application = new Application();
+$application->setCommandLoader($commandLoader);
+$application->run();

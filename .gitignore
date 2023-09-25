@@ -1,8 +1,8 @@
 /dist/
 /vendor/
 /mysql/
-/caddy/
 /postgres/
 .vscode
 .idea
 .docker-compose.yaml.swp
+composer.lock

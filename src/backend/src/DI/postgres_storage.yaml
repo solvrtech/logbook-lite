@@ -1,0 +1,46 @@
+imports:
+    - { resource: sql_storage.yaml }
+
+services:
+    # repositories
+    # alert
+    App\Repository\Alert\AlertSettingRepositoryInterface: '@App\Repository\Alert\PostgresAlertSettingRepository'
+
+    # app
+    App\Repository\App\AppRepositoryInterface: '@App\Repository\App\PostgresAppRepository'
+    App\Repository\App\AppLogoRepositoryInterface: '@App\Repository\App\PostgresAppLogoRepository'
+    App\Repository\App\TeamAppRepositoryInterface: '@App\Repository\App\PostgresTeamAppRepository'
+
+    # log
+    App\Repository\Log\LogRepositoryInterface: '@App\Repository\Log\PostgresLogRepository'
+    App\Repository\Log\LogCommentRepositoryInterface: '@App\Repository\Log\PostgresLogCommentRepository'
+
+    # health-status
+    App\Repository\Health\HealthStatusRepositoryInterface: '@App\Repository\Health\PostgresHealthStatusRepository'
+    App\Repository\Health\HealthCheckRepositoryInterface: '@App\Repository\Health\PostgresHealthCheckRepository'
+
+    # notification
+    App\Repository\Notification\NotificationRepositoryInterface:
+        '@App\Repository\Notification\PostgresNotificationRepository'
+    App\Repository\Notification\UserNotificationRepositoryInterface:
+        '@App\Repository\Notification\PostgresUserNotificationRepository'
+
+    # reset-password
+    App\Repository\ResetPassword\ResetPasswordRepositoryInterface:
+        '@App\Repository\ResetPassword\PostgresResetPasswordRepository'
+
+    # setting
+    App\Repository\Setting\GeneralSettingRepositoryInterface: '@App\Repository\Setting\PostgresGeneralSettingRepository'
+    App\Repository\Setting\SecuritySettingRepositoryInterface:
+        '@App\Repository\Setting\PostgresSecuritySettingRepository'
+    App\Repository\Setting\MailSettingRepositoryInterface: '@App\Repository\Setting\PostgresMailSettingRepository'
+    App\Repository\Setting\UserMFASettingRepositoryInterface: '@App\Repository\Setting\PostgresUserMFASettingRepository'
+    App\Repository\Setting\HealthStatusSettingRepositoryInterface:
+        '@App\Repository\Setting\PostgresHealthStatusSettingRepository'
+
+    # team
+    App\Repository\Team\TeamRepositoryInterface: '@App\Repository\Team\PostgresTeamRepository'
+    App\Repository\Team\UserTeamRepositoryInterface: '@App\Repository\Team\PostgresUserTeamRepository'
+
+    # user
+    App\Repository\User\UserRepositoryInterface: '@App\Repository\User\PostgresUserRepository'

@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ subject }}{% endblock %}
+
+{% block body %}
+    <table class="wrapper" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+        <tbody>
+        <tr>
+            <td>
+                <h2>Log Summary</h2>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p class="mb0"><strong>App:</strong></p>
+                <p>{{ app }}</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p class="mb0"><strong>Instance ID:</strong></p>
+                <p>{{ instanceId }}</p>
+            </td>
+        </tr>
+
+        {% for key, item in log %}
+            {% if item %}
+                <tr>
+                    <td>
+                        {% if 'datetime' is same as(key) %}
+                            <p class="mb0"><strong>Date/Time:</strong></p>
+                        {% elseif 'os' is same as(key) %}
+                            <p class="mb0"><strong>{{ key|upper }}:</strong></p>
+                        {% else %}
+                            <p class="mb0"><strong>{{ key|capitalize }}:</strong></p>
+                        {% endif %}
+
+                        {% if 'stacktrace' is same as(key) %}
+                            <code>
+                                <pre>{% for itm in item %}#{{ loop.index }} {{ itm }}<br>{% endfor %}</pre>
+                            </code>
+                        {% else %}
+                            <p>{{ item }}</p>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+        <tbody>
+        <tr>
+            <td>
+                <a class="btn btn-primary" href="{{ url }}" target="_blank">Read more</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

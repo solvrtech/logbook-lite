@@ -1,0 +1,4 @@
+services:
+    # service
+    App\Service\Log\LogServiceInterface: '@App\Service\Log\SqlLogService'
+    App\Service\Log\LogActionServiceInterface: '@App\Service\Log\SqlLogActionService'

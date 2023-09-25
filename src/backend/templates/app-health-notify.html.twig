@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ subject }}{% endblock %}
+
+{% block body %}
+    <table class="wrapper" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+        <tbody>
+        <tr>
+            <td>
+                <h2>Health Checks Summary</h2>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p class="mb0"><strong>App:</strong></p>
+                <p>{{ app }}</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p class="mb0"><strong>Date/Time:</strong></p>
+                <p>{{ datetime }}</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p class="mb0"><strong>Replied:</strong></p>
+                <p>{{ replied|upper }}</p>
+            </td>
+        </tr>
+
+        {% if 'failed' is same as(replied) %}
+            <tr>
+                <td>
+                    <p class="mb0"><strong>Last active:</strong></p>
+                    <p>{{ lastActive }}</p>
+                </td>
+            </tr>
+        {% endif %}
+
+        {% if 'ok' is same as(replied) %}
+            {% for check in checks %}
+                <tr>
+                    <td>
+                        <p class="mb0"><strong>{{ check.key }}:</strong></p>
+                        {% if check.value is iterable %}
+                            <ul>
+                                {% for key, item in check.value %}
+                                    {% if 'lastMinute' is same as(key) %}
+                                        <li>Last minute: {{ item|number_format(2) }}</li>
+                                    {% elseif 'last5Minutes' is same as(key) %}
+                                        <li>Last 5 minutes: {{ item|number_format(2) }}</li>
+                                    {% elseif 'last15Minutes' is same as(key) %}
+                                        <li>Last 15 minutes: {{ item|number_format(2) }}</li>
+                                    {% else %}
+                                        <li>{{ key|capitalize }}: {{ item }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>{{ check.value }} {% if check.unit %} {{ check.unit }} {% endif %}</p>
+                        {% endif %}
+
+                        {% if check.alert %}
+                            <p>alert: {{ check.alert }}</p>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+        {% endif %}
+        </tbody>
+    </table>
+
+    <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+        <tbody>
+        <tr>
+            <td>
+                <a class="btn btn-primary" href="{{ url }}" target="_blank">Read more</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,46 @@
+imports:
+    - { resource: sql_storage.yaml }
+
+services:
+    # repositories
+    # alert
+    App\Repository\Alert\AlertSettingRepositoryInterface: '@App\Repository\Alert\MysqlAlertSettingRepository'
+
+    # app
+    App\Repository\App\AppRepositoryInterface: '@App\Repository\App\MysqlAppRepository'
+    App\Repository\App\AppLogoRepositoryInterface: '@App\Repository\App\MysqlAppLogoRepository'
+    App\Repository\App\TeamAppRepositoryInterface: '@App\Repository\App\MysqlTeamAppRepository'
+
+    # log
+    App\Repository\Log\LogRepositoryInterface: '@App\Repository\Log\MysqlLogRepository'
+    App\Repository\Log\LogCommentRepositoryInterface: '@App\Repository\Log\MysqlLogCommentRepository'
+
+    # health-status
+    App\Repository\Health\HealthStatusRepositoryInterface: '@App\Repository\Health\MysqlHealthStatusRepository'
+    App\Repository\Health\HealthCheckRepositoryInterface: '@App\Repository\Health\MysqlHealthCheckRepository'
+
+    # notification
+    App\Repository\Notification\NotificationRepositoryInterface:
+        '@App\Repository\Notification\MysqlNotificationRepository'
+    App\Repository\Notification\UserNotificationRepositoryInterface:
+        '@App\Repository\Notification\MysqlUserNotificationRepository'
+
+    # reset-password
+    App\Repository\ResetPassword\ResetPasswordRepositoryInterface:
+        '@App\Repository\ResetPassword\MysqlResetPasswordRepository'
+
+    # setting
+    App\Repository\Setting\GeneralSettingRepositoryInterface: '@App\Repository\Setting\MysqlGeneralSettingRepository'
+    App\Repository\Setting\SecuritySettingRepositoryInterface: '@App\Repository\Setting\MysqlSecuritySettingRepository'
+    App\Repository\Setting\MailSettingRepositoryInterface: '@App\Repository\Setting\MysqlMailSettingRepository'
+    App\Repository\Setting\UserMFASettingRepositoryInterface: '@App\Repository\Setting\MysqlUserMFASettingRepository'
+    App\Repository\Setting\HealthStatusSettingRepositoryInterface:
+        '@App\Repository\Setting\MysqlHealthStatusSettingRepository'
+
+    # team
+    App\Repository\Team\TeamRepositoryInterface: '@App\Repository\Team\MysqlTeamRepository'
+    App\Repository\Team\UserTeamRepositoryInterface: '@App\Repository\Team\MysqlUserTeamRepository'
+
+    # user
+    App\Repository\User\UserRepositoryInterface: '@App\Repository\User\MysqlUserRepository'
+

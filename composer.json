@@ -1,0 +1,35 @@
+{
+    "name": "logbook/logbook",
+    "description": "A centralized logging platform",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SolvrTech",
+            "homepage": "https://www.solvrtech.id"
+        }
+    ],
+    "support": {
+        "issues": "https://support.solvrtech.id",
+        "docs": "https://solvrtech.id/logbook/docs"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.1",
+        "symfony/console": "6.3.*",
+        "symfony/filesystem": "^6.3"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "setup": "php console setup",
+            "build": "php console build"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ]
+    }
+}

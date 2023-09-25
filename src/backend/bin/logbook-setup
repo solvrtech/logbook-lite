@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+
+use App\Kernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Dotenv\Dotenv;
+
+require_once dirname(__DIR__).'/bin/LogBookLoad.php';
+
+return function (array $context) {
+    $dotenv = new Dotenv();
+    $dotenv->load(dirname(__DIR__).'/.env');
+
+    $kernel = new Kernel($context['APP_ENV'], false);
+    $application = new Application($kernel);
+
+    $input = new ArrayInput([]);
+    $output = new ConsoleOutput();
+    $command = $application->find('app:setup');
+
+    $command->run($input, $output);
+};

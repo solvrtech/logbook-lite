@@ -1,0 +1,5 @@
+/bundles/
+/api/backups/*
+!/api/backups/.gitkeep
+/api/uploads/logo/*
+!/api/uploads/logo/.gitkeep

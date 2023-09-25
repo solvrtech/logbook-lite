@@ -6,7 +6,5 @@
 /vendor/
 /.vscode/
 /.idea/
-/mysql/
-/mariadb/
-/postgres/
-/caddy/
+/composer.lock
+/symfony.lock

@@ -1,0 +1,88 @@
+security:
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: "auto"
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+    providers:
+        user_provider:
+            id: App\Security\UserProvider
+    firewalls:
+        login:
+            pattern: ^/api/auth/login
+            stateless: false
+            provider: user_provider
+            login_throttling:
+                limiter: App\Security\RateLimiter\LoginRateLimiter
+            json_login:
+                check_path: auth_login
+                username_path: email
+                success_handler: App\Security\Authentication\AuthenticationSuccessHandler
+                failure_handler: App\Security\Authentication\AuthenticationFailureHandler
+        mfa:
+            pattern: ^/api/auth/mfa
+            stateless: true
+        refresh:
+            pattern: ^/api/auth/refresh
+            stateless: true
+        reset-password:
+            pattern: ^/api/auth/reset-password
+            stateless: true
+        set-password:
+            pattern: ^/api/auth/set-password
+            stateless: true
+        app-setting:
+            pattern: ^/api/setting/all
+            stateless: true
+        logbook_client:
+            pattern: ^/api/log/save
+            stateless: true
+            custom_authenticators:
+                - App\Security\Authenticator\LogbookClientAuthenticator
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: user_provider
+            custom_authenticators:
+                - App\Security\Authenticator\ApiTokenAuthenticator
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            lazy: true
+            provider: user_provider
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#the-firewall
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        # public access
+        - { path: "^/api/auth/(login|refresh)", roles: PUBLIC_ACCESS }
+        - { path: "^/api/auth/mfa", roles: PUBLIC_ACCESS }
+        - { path: "^/api/auth/reset-password", roles: PUBLIC_ACCESS }
+        - { path: "^/api/auth/set-password", roles: PUBLIC_ACCESS }
+        - { path: "^/api/setting/all", roles: PUBLIC_ACCESS }
+        # authenticated
+        - { path: "^/api", roles: ROLE_USER }
+        - { path: "^/api/log/save", roles: ROLE_USER }
+        - { path: "^/api/health-status", roles: ROLE_USER }
+    role_hierarchy:
+        ROLE_STANDARD: [ ROLE_USER ]
+        ROLE_ADMIN: [ ROLE_USER, ROLE_STANDARD ]
+
+when@test:
+    security:
+        password_hashers:
+            # By default, password hashers are resource intensive and take time. This is
+            # important to generate secure password hashes. In tests however, secure hashes
+            # are not important, waste resources and increase test times. The following
+            # reduces the work factor to the lowest possible values.
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Lowest possible value for bcrypt
+                time_cost: 3 # Lowest possible value for argon
+                memory_cost: 10 # Lowest possible value for argon
