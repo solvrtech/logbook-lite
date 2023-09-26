@@ -6,7 +6,6 @@ class AppSearchResponse extends AppStandardResponse
 {
     public ?string $description = null;
     public bool $isTeamManager = false;
-    public bool $backupActive = false;
 
     public function getDescription(): ?string
     {
@@ -28,18 +27,6 @@ class AppSearchResponse extends AppStandardResponse
     public function setIsTeamManager(bool $isTeamManager): self
     {
         $this->isTeamManager = $isTeamManager;
-
-        return $this;
-    }
-
-    public function backupActive(): bool
-    {
-        return $this->backupActive;
-    }
-
-    public function setBackupActive(?bool $backupActive): self
-    {
-        $this->backupActive = $backupActive ?? false;
 
         return $this;
     }

@@ -121,8 +121,7 @@ abstract class SqlAppRepository
     {
         $qb = (new QueryBuilder())
             ->table('app a')
-            ->leftJoin('app_logo al ON a.id = al.app_id')
-            ->leftJoin('backup_setting bs ON a.id = bs.app_id');
+            ->leftJoin('app_logo al ON a.id = al.app_id');
         $this->findLogJoinQuery($qb, $user);
 
         if ($searchRequest->getSearch()) {
@@ -140,14 +139,14 @@ abstract class SqlAppRepository
             ->fetchOne();
         $qb
             ->select(
-                'SELECT DISTINCT a.id, a.name, a.description, a.type, al.public_path AS app_logo, bs.enabled AS backup_active, 1 AS is_team_manager'
+                'SELECT DISTINCT a.id, a.name, a.description, a.type, al.public_path AS app_logo, 1 AS is_team_manager'
             )
             ->order('a.id '.CommonConfig::ORDER);
 
         if (UserConfig::ROLE_ADMIN !== $user->getRole()) {
             $qb
                 ->select(
-                    'SELECT DISTINCT a.id, a.name, a.description, a.type, al.public_path AS app_logo, bs.enabled AS backup_active, CASE WHEN tm.id IS NOT NULL THEN TRUE ELSE FALSE END AS is_team_manager'
+                    'SELECT DISTINCT a.id, a.name, a.description, a.type, al.public_path AS app_logo, CASE WHEN tm.id IS NOT NULL THEN TRUE ELSE FALSE END AS is_team_manager'
                 );
         }
 
