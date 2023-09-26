@@ -57,15 +57,7 @@ class UserResponse
 
     public function setMfa(?UserMFASetting $userMFASetting): self
     {
-        $method = MFAConfig::EMAIL_AUTHENTICATION;
-
-        if ($userMFASetting) {
-            if (MFAConfig::GOOGLE_AUTHENTICATION === $userMFASetting->getMethod()) {
-                $method = MFAConfig::GOOGLE_AUTHENTICATION;
-            }
-        }
-
-        $this->mfa = $method;
+        $this->mfa = $userMFASetting?->getMethod() ?? MFAConfig::EMAIL_AUTHENTICATION;;
 
         return $this;
     }
