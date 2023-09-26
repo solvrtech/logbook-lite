@@ -1,0 +1,16 @@
+:host {
+  .apps_form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .app_form {
+      width: 100%;
+      margin-left: 0;
+      margin-right: 10px;
+    }
+    .app_button {
+      align-items: center;
+    }
+  }
+}

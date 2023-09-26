@@ -1,0 +1,27 @@
+<div class="d-flex">
+  <div class="drop-img cover-image" *ngIf="message.app.appLogo != null; else icon">
+    <img [src]="message.app.appLogo" alt="logo" class="drop-img cover-image" />
+  </div>
+  <ng-template #icon>
+    <span class="icon-message">
+      <i [ngClass]="iconMessage"></i>
+    </span>
+  </ng-template>
+  <div class="mx-2">
+    <h3 mat-dialog-title class="mb-0">{{ message.app.name }}</h3>
+    <p class="label">{{ createdAt }}</p>
+  </div>
+</div>
+
+<div mat-dialog-content>
+  <p class="mt-2">{{ message.message }}</p>
+</div>
+<div mat-dialog-actions [ngClass]="'d-flex flex-row-reverse'">
+  <a *ngIf="message.link != null" mat-raised-button [href]="message.link" color="primary">
+    {{ 'common.see_more' | translate }}
+  </a>
+
+  <a mat-button (click)="onDismiss()" class="mx-2 text-decoration-none">
+    {{ 'common.close' | translate }}
+  </a>
+</div>

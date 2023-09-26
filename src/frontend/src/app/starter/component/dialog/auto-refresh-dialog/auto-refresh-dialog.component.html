@@ -1,0 +1,57 @@
+<div mat-dialog-title>
+  <p class="mb-0">{{ 'title.auto_refresh_setting' | translate }}</p>
+</div>
+
+<div mat-dialog-content>
+  <p class="mat-dialog-subtitle">{{ 'auto-refresh.health_logs_subtitle' | translate }}</p>
+  <form [formGroup]="formGroup">
+    <!-- Auto refresh health status and/or logs -->
+    <app-form-toggle
+      [label]="formGroup.controls['enable'].value === true ? 'common.enabled' : 'common.disabled'"
+      [control]="asFormControl(formGroup.controls['enable'])"
+      (valueChanged)="onChangedEnable($event)"
+    >
+    </app-form-toggle>
+
+    <!-- Interval -->
+    <ng-container *ngIf="formGroup.controls['enable'].value === true">
+      <app-form-input
+        [label]="'common.interval_auto_refresh'"
+        [control]="asFormControl(formGroup.controls['interval'])"
+        [type]="'number'"
+        [min]="5"
+      >
+      </app-form-input>
+    </ng-container>
+
+    <ng-container *ngIf="!show">
+      <p class="mat-dialog-subtitle">{{ 'auto-refresh.message_subtitle' | translate }}</p>
+
+      <!-- Auto refresh message -->
+      <app-form-toggle
+        [label]="formGroup.controls['enMessage'].value === true ? 'common.enabled' : 'common.disabled'"
+        [control]="asFormControl(formGroup.controls['enMessage'])"
+        (valueChanged)="onChangeMessage($event)"
+      >
+      </app-form-toggle>
+
+      <!-- Interval -->
+      <ng-container *ngIf="formGroup.controls['enMessage'].value === true">
+        <app-form-input
+          [label]="'common.interval_auto_refresh'"
+          [control]="asFormControl(formGroup.controls['inMessage'])"
+          [type]="'number'"
+          [min]="10"
+        >
+        </app-form-input>
+      </ng-container>
+    </ng-container>
+  </form>
+</div>
+
+<div mat-dialog-actions [ngClass]="'d-flex flex-row-reverse'">
+  <app-save-button (save)="save()" [disabled]="formGroup.invalid"></app-save-button>
+  <a mat-button (click)="onDismiss()" class="mx-2 text-decoration-none">
+    {{ 'common.close' | translate }}
+  </a>
+</div>

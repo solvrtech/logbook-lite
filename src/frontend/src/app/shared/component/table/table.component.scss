@@ -1,0 +1,42 @@
+@import 'variables.scss';
+
+:host {
+  button {
+    margin: 8px;
+  }
+
+  .grid {
+    margin-bottom: 1em;
+  }
+
+  margin: 1em 0;
+
+  .no-data-card {
+    display: flex;
+    justify-content: center;
+  }
+  .mat-table {
+    width: 100%;
+  }
+
+  .mat-toolbar {
+    background: #fff;
+    color: #000000de;
+  }
+
+  mat-chip {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    text-align: center;
+    border-radius: 2em;
+    height: auto;
+  }
+
+  button {
+    margin-bottom: 8px;
+  }
+
+  td.mat-column-menus span {
+    display: table-cell;
+  }
+}

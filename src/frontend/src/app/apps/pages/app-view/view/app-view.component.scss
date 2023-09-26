@@ -1,0 +1,29 @@
+@import 'variables.scss';
+
+:host {
+  app-page {
+    padding: 0 0 1rem;
+  }
+
+  .row {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  span.last-health {
+    background: $badge-info-color;
+    color: #fff;
+    padding: 3px 5px;
+    border-radius: 4px;
+    margin-right: 0.5em;
+  }
+
+  @media screen and (min-width: 1200px) {
+    // desktop
+    .app-top-right {
+      position: absolute;
+      top: -4.5em;
+      right: 15px;
+    }
+  }
+}

@@ -1,0 +1,76 @@
+@import 'variables.scss';
+:host {
+  .apps_form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .app_form {
+      width: 100%;
+      margin-left: 0;
+      margin-right: 10px;
+    }
+    .app_button {
+      align-items: center;
+    }
+  }
+
+  .page-title {
+    padding: 1rem 0 0;
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  .apiKey {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    @media (max-width: 767px) {
+      display: block;
+    }
+
+    .apikey_input {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+
+  .col-xl-6 {
+    @media (max-width: 1399px) {
+      -ms-flex: 0 0 100%;
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+
+  .mat-icon-size {
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .img-wrap {
+    position: relative;
+  }
+
+  .img-wrap .close {
+    position: absolute;
+    bottom: -40px;
+    left: 76px;
+    z-index: 100;
+    background-color: #fff;
+    opacity: 0.4;
+    line-height: 15px;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+  }
+
+  .img-wrap:hover .close {
+    opacity: 1;
+    color: red;
+    background-color: #fff;
+    opacity: 0.7;
+  }
+}

@@ -1,0 +1,25 @@
+@import 'variables.scss';
+
+:host {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  display: block;
+
+  .lang-select {
+    margin: 0 0 0 1.5em;
+    padding-bottom: 0.5em;
+    color: $text-label;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 0.8em;
+    letter-spacing: 0.05em;
+
+    &:first-of-type {
+      margin: 0;
+    }
+
+    &.active {
+      border-bottom: 1px solid $text-label;
+    }
+  }
+}

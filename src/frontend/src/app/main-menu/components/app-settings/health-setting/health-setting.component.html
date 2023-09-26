@@ -1,0 +1,42 @@
+<mat-card>
+  <div class="px-3">
+    <mat-card-title class="title_card">{{ 'title.health_status' | translate }}</mat-card-title>
+    <mat-card-subtitle>
+      <div innerHTML="{{ 'app.health.description' | translate : { data: link } }}"></div>
+    </mat-card-subtitle>
+  </div>
+
+  <mat-card-content>
+    <div class="px-3">
+      <form [formGroup]="formGroup">
+        <app-form-toggle
+          [label]="'app.health.enable_health_check'"
+          [control]="asFormControl(formGroup.controls['enable'])"
+        ></app-form-toggle>
+
+        <ng-container *ngIf="formGroup.controls['enable'].value === true">
+          <app-form-input
+            [label]="'app.health.base_url'"
+            [control]="asFormControl(formGroup.controls['baseUrl'])"
+            [hint]="'app.health.hint.base_url'"
+            [errorTranslations]="errorTranslations.url"
+          ></app-form-input>
+
+          <app-form-input
+            [label]="'app.health.request_period'"
+            [control]="asFormControl(formGroup.controls['requestPeriod'])"
+            [type]="'number'"
+            [min]="1"
+            [max]="1440"
+          ></app-form-input>
+        </ng-container>
+      </form>
+    </div>
+  </mat-card-content>
+  <ng-container *ngIf="app.isTeamManager">
+    <mat-divider></mat-divider>
+    <mat-card-actions align="end" class="form-buttons">
+      <app-save-button (save)="save()" [disabled]="formGroup.invalid"></app-save-button>
+    </mat-card-actions>
+  </ng-container>
+</mat-card>

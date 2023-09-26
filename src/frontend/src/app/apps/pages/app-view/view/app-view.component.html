@@ -1,0 +1,38 @@
+<app-page
+  [title]="name"
+  [hasTitle]="pageState.state != 'loaded' ? false : true"
+  [appLogo]="appLogo"
+  [hasRightSection]="true"
+  [message]="pageState.message ? pageState.message : ''"
+  [state]="pageState.state"
+  [bodyTemplate]="body"
+  [breadCrumbs]="breadCrumbs"
+></app-page>
+
+<ng-template #body>
+  <div class="app-top-right">
+    <button
+      mat-icon-button
+      routerLink="/main-menu/apps/settings/{{ appId }}"
+      matTooltip="{{ 'common.setting' | translate }}"
+      *ngIf="isTeamManager"
+    >
+      <mat-icon>settings</mat-icon>
+    </button>
+  </div>
+
+  <mat-tab-group animationDuration="0ms">
+    <mat-tab label="{{ 'title.logs' | translate }}">
+      <div class="mt-3 mb-2 p-1">
+        <app-log></app-log>
+      </div>
+    </mat-tab>
+    <ng-container *ngIf="isHealthSettingActive">
+      <mat-tab label="{{ 'title.health_status' | translate }}">
+        <div class="mt-3 mb-2 p-1">
+          <app-health></app-health>
+        </div>
+      </mat-tab>
+    </ng-container>
+  </mat-tab-group>
+</ng-template>

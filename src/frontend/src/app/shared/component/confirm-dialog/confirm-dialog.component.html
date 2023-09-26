@@ -1,0 +1,35 @@
+<h3 mat-dialog-title>{{ title | translate }}</h3>
+<div mat-dialog-content>
+  <p class="my-4" innerHTML="{{ message | translate : { item: item } }}"></p>
+
+  <form [formGroup]="form">
+    <mat-form-field appearance="standard" *ngIf="inputName">
+      <mat-label>{{ 'common.name' | translate }}</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions [ngClass]="'d-flex flex-row-reverse'">
+  <ng-container *ngIf="buttonOk; else button">
+    <button mat-raised-button color="primary" [routerLink]="link" (click)="onDismiss()">
+      {{ 'common.ok' | translate }}
+    </button>
+  </ng-container>
+
+  <ng-template #button>
+    <ng-container *ngIf="inputName">
+      <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="onConfirm()" class="mx-2">
+        {{ 'common.yes' | translate }}
+      </button>
+    </ng-container>
+
+    <ng-container *ngIf="!inputName">
+      <button mat-raised-button color="primary" (click)="onConfirm()" class="mx-2">
+        {{ 'common.yes' | translate }}
+      </button>
+    </ng-container>
+    <a mat-button (click)="onDismiss()" class="text-decoration-none">
+      {{ 'common.no' | translate }}
+    </a>
+  </ng-template>
+</div>

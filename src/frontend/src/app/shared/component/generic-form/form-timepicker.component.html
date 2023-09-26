@@ -1,0 +1,36 @@
+<mat-form-field appearance="standard" [ngClass]="fieldClasses">
+  <mat-label>{{ label | translate }}</mat-label>
+  <input
+    matInput
+    #timepickerInput
+    [ngxTimepicker]="picker"
+    [format]="format"
+    [formControl]="control"
+    [readonly]="true"
+    [required]="isRequired"
+  />
+  <ngx-material-timepicker #picker [confirmBtnTmpl]="confirmBtn" [cancelBtnTmpl]="cancelBtn"></ngx-material-timepicker>
+  <mat-hint [ngClass]="'hint'" *ngIf="hint != null">
+    <div class="input-hint-max" *ngIf="hintMax">{{ control.value.toString().length }}/{{ hintMax }}</div>
+    <div class="input-hint">{{ hint | translate }}</div>
+  </mat-hint>
+  <mat-error *ngIf="(!control || !control.disabled) && control?.errors">
+    {{ getErrorString(control.errors) | translate }}
+  </mat-error>
+  <ng-container matSuffix *ngIf="!control.disabled">
+    <span class="d-flex">
+      <button mat-icon-button *ngIf="control.value" (click)="onReset($event)"><mat-icon>clear</mat-icon></button>
+      <button *ngIf="!disabled" mat-icon-button (click)="picker.open()">
+        <mat-icon>access_time</mat-icon>
+      </button>
+    </span>
+  </ng-container>
+</mat-form-field>
+<ng-template #confirmBtn>
+  <button mat-flat-button color="primary">
+    {{ 'common.ok' | translate }}
+  </button>
+</ng-template>
+<ng-template #cancelBtn>
+  <a mat-button class="mx-2 text-decoration-none">{{ 'common.cancel' | translate }}</a>
+</ng-template>

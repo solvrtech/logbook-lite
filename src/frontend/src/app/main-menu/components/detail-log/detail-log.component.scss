@@ -1,0 +1,57 @@
+@import 'variables.scss';
+:host {
+  pre {
+    display: flex;
+    margin-top: 0;
+    margin-bottom: 0;
+    word-wrap: break-word;
+
+    code {
+      flex: 1;
+      min-height: 100%;
+
+      &.hljs-line-numbers {
+        padding: 0 !important;
+      }
+    }
+  }
+
+  /** Line numbers styles */
+  .hljs {
+    padding: 10px;
+    border: 1px solid gray;
+    transition: border ease 1s;
+  }
+
+  .comment-card {
+    background-color: $card-comment;
+    border-radius: 0 0.4375rem 0.4375rem;
+  }
+
+  .log_content {
+    height: 5rem;
+    padding-top: 16px;
+  }
+
+  .tags_log {
+    padding-top: 16px;
+
+    &.in-active {
+      height: 5rem;
+    }
+  }
+
+  .status_log {
+    height: 4rem;
+  }
+
+  a {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.87);
+    cursor: pointer;
+  }
+
+  .break {
+    word-break: break-all;
+  }
+}

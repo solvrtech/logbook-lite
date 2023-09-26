@@ -1,0 +1,90 @@
+<app-page-detail
+  [title]="'team.detail_team'"
+  [hasTitle]="pageState.state != 'loaded' ? false : true"
+  [returnUrl]="returnUrl ? returnUrl : pageState.returnUrl"
+  [message]="pageState.message ? pageState.message : ''"
+  [state]="pageState.state"
+  [queryParams]="queryParams"
+  [bodyTemplate]="body"
+  [breadCrumbs]="breadCrumbs ? breadCrumbs : pageBreadCrumbs"
+></app-page-detail>
+
+<ng-template #body>
+  <div class="px-3">
+    <div class="mb-3">
+      <p class="label mb-1">{{ 'common.name' | translate }}</p>
+      <p>{{ team.name }}</p>
+    </div>
+
+    <p>{{ 'common.members' | translate }}</p>
+    <ng-container *ngFor="let team of team.userTeam; let idx = index">
+      <ng-container *ngFor="let user of users">
+        <mat-divider class="mb-2" *ngIf="user.id === team.userId && idx > 0"></mat-divider>
+        <div class="is-dekstop row mb-2" *ngIf="user.id === team.userId">
+          <div class="col">
+            <p class="label mb-1">{{ 'common.user' | translate }}</p>
+            <p>{{ user.name }}</p>
+          </div>
+          <div class="col">
+            <p class="label mb-1">{{ 'common.role' | translate }}</p>
+            <p>{{ 'team.' + team.role | translate }}</p>
+          </div>
+        </div>
+        <div class="is-mobile" *ngIf="user.id === team.userId">
+          <p class="label mb-1">{{ 'common.user' | translate }}</p>
+          <p>{{ user.name }}</p>
+
+          <p class="label mb-1">{{ 'common.role' | translate }}</p>
+          <p>{{ 'team.' + team.role | translate }}</p>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <hr />
+    <p>{{ 'title.apps' | translate }}</p>
+    <ng-template #empty>
+      <p>{{ 'team.no_assigned_apps' | translate }}</p>
+    </ng-template>
+    <ng-container *ngIf="team.apps; else empty">
+      <ng-container *ngFor="let app of team.apps; let idx = index">
+        <mat-divider class="mb-2" *ngIf="idx > 0"></mat-divider>
+        <div class="is-dekstop row mb-2">
+          <div class="col">
+            <p class="label mb-1">{{ 'common.name' | translate }}</p>
+            <div class="d-flex align-items-center">
+              <ng-container *ngIf="(app ? app.appLogo : '') != null; else icon">
+                <img alt="" class="team-logo" [src]="app ? app.appLogo : ''" />
+              </ng-container>
+              <ng-template #icon>
+                <span class="icon-logo">
+                  <i [ngClass]="appIcon(app.type)" class="icon-logo"></i>
+                </span>
+              </ng-template>
+              <span class="mx-2">{{ app.name }}</span>
+            </div>
+          </div>
+          <div class="col">
+            <p class="label mb-1">{{ 'app.description' | translate }}</p>
+            <p>{{ app.description }}</p>
+          </div>
+        </div>
+        <div class="is-mobile">
+          <p class="label mb-1">{{ 'common.name' | translate }}</p>
+          <div class="d-flex align-items-center mb-3">
+            <ng-container *ngIf="(app ? app.appLogo : '') != null; else icon">
+              <img alt="" class="team-logo" [src]="app ? app.appLogo : ''" />
+            </ng-container>
+            <ng-template #icon>
+              <span class="icon-logo">
+                <i [ngClass]="appIcon(app.type)" class="icon-logo"></i>
+              </span>
+            </ng-template>
+            <span class="mx-2">{{ app.name }}</span>
+          </div>
+          <p class="label mb-1">{{ 'app.description' | translate }}</p>
+          <p>{{ app.description }}</p>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+</ng-template>

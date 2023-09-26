@@ -1,0 +1,10 @@
+<mat-card>
+  <div class="px-3">
+    <mat-card-title class="title_card">{{ 'app.delete_app' | translate }}</mat-card-title>
+    <mat-card-subtitle>{{ 'app.warning_app' | translate }}</mat-card-subtitle>
+  </div>
+  <mat-divider></mat-divider>
+  <mat-card-actions align="end" class="form-buttons">
+    <button mat-raised-button color="warn" (click)="onDeleteApp()">{{ 'common.delete' | translate }}</button>
+  </mat-card-actions>
+</mat-card>

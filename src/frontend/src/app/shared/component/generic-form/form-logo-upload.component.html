@@ -1,0 +1,14 @@
+<input type="file" #file [hidden]="true" [accept]="acceptedMimeType" (change)="fileChangeEvent($event)" />
+<div class="d-flex flex-column">
+  <img
+    id="logo"
+    style="max-width: 100px; max-height: 100px"
+    *ngIf="srcImage"
+    [src]="srcImage"
+    class="uploaded-image mb-2"
+    alt=""
+  />
+  <button mat-icon-button (click)="selectFile()" [matTooltip]="'common.upload_select_logo' | translate">
+    <mat-icon>add_photo_alternate</mat-icon>
+  </button>
+</div>

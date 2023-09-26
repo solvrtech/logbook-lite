@@ -1,0 +1,21 @@
+<mat-form-field appearance="standard" [ngClass]="fieldCssClasses" *ngIf="control">
+  <mat-label>{{ label | translate }}</mat-label>
+  <input
+    matInput
+    [maxlength]="hintMax"
+    [type]="type"
+    [min]="min"
+    [formControl]="control"
+    (blur)="blurEvent.emit($event)"
+    (change)="valueChanged.emit($event)"
+    [required]="isRequired"
+    [max]="max"
+  />
+  <mat-hint [ngClass]="'hint'" *ngIf="hint != null">
+    <div class="input-hint-max" *ngIf="hintMax">{{ control.value.toString().length }}/{{ hintMax }}</div>
+    <div class="input-hint" *ngIf="hint">{{ hint | translate }}</div>
+  </mat-hint>
+  <mat-error *ngIf="(!control || !control.disabled) && control?.errors">
+    {{ getErrorString(control.errors) | translate }}
+  </mat-error>
+</mat-form-field>

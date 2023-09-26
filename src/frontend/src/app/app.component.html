@@ -1,0 +1,7 @@
+<ngx-loading-bar [color]="ngxBarColor" [includeSpinner]="ngxSpinner" [height]="ngxHeight">
+  <div class="lazy-route-loader" *ngIf="showLazyRouteLoader">
+    <span>{{ 'app.loading' | translate }}</span>
+  </div>
+</ngx-loading-bar>
+
+<router-outlet></router-outlet>

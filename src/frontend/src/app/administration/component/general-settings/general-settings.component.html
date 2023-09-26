@@ -1,0 +1,35 @@
+<mat-card>
+  <div class="px-3">
+    <mat-card-title class="title_card">{{ 'common.general_settings' | translate }}</mat-card-title>
+  </div>
+  <mat-card-content>
+    <div class="px-3">
+      <form [formGroup]="formGroup">
+        <app-form-input
+          [label]="'common.appSubtitle'"
+          [control]="asFormControl(formGroup.controls['appSubtitle'])"
+          [hintMax]="25"
+        ></app-form-input>
+
+        <app-form-select-search-multiple
+          [label]="'common.languages'"
+          [control]="asFormControl(formGroup.controls['language'])"
+          [useSearch]="false"
+          [options]="languages"
+          (valueChanged)="onChange($event)"
+        ></app-form-select-search-multiple>
+
+        <app-form-select-search
+          [label]="'common.default_language'"
+          [control]="asFormControl(formGroup.controls['default'])"
+          [useSearch]="false"
+          [options]="defaults"
+        ></app-form-select-search>
+      </form>
+    </div>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions align="end" class="form-buttons">
+    <app-save-button (save)="save()" [disabled]="formGroup.invalid"></app-save-button>
+  </mat-card-actions>
+</mat-card>

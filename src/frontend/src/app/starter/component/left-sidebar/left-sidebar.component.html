@@ -1,0 +1,116 @@
+<div class="mat-tree-wrapper">
+  <div class="menu">
+    <ul class="nav flex-column" *ngFor="let data of menus">
+      <ng-container *ngIf="data.items">
+        <div class="sidebar-heading label-title" *ngIf="!data.hidden">
+          <span class="label-title-text menu-heading-label">{{ data.label | translate }}</span>
+        </div>
+
+        <div *ngFor="let child of data.items">
+          <li class="nav-item" *ngIf="!child.hidden">
+            <ng-container *ngIf="!child.hidden">
+              <a
+                class="nav-link label-title remove-decoration"
+                [ngClass]="child.cssClasses"
+                aria-current="page"
+                (click)="onMenuClicked(child.link)"
+                [routerLink]="child.link"
+              >
+                <mat-icon class="mat-icon-rtl-mirror" [ngClass]="child.cssClasses" *ngIf="child.icon">{{
+                  child.icon
+                }}</mat-icon>
+                <span class="label-title-text" [ngClass]="child.cssClasses">
+                  {{ child.label | translate }}
+                </span>
+              </a>
+            </ng-container>
+          </li>
+        </div>
+      </ng-container>
+
+      <li class="nav-item" *ngIf="!data.items">
+        <ng-container *ngIf="!data.hidden">
+          <a
+            class="nav-link label-title remove-decoration"
+            [ngClass]="data.cssClasses"
+            aria-current="page"
+            (click)="onMenuClicked(data.link)"
+            [routerLink]="data.link"
+          >
+            <mat-icon class="mat-icon-rtl-mirror" [ngClass]="data.cssClasses" *ngIf="data.icon">{{
+              data.icon
+            }}</mat-icon>
+            <span class="label-title-text" [ngClass]="data.cssClasses">
+              {{ data.label | translate }}
+            </span>
+          </a>
+        </ng-container>
+      </li>
+    </ul>
+    <ul class="nav flex-column mobile-button">
+      <mat-divider></mat-divider>
+
+      <div class="sidebar-heading label-title">
+        <span class="label-title-text menu-heading-label">{{ 'title.personal' | translate }}</span>
+      </div>
+      <li class="nav-item" *ngIf="languages.length > 1">
+        <!-- User -->
+        <!-- Language more then one -->
+        <mat-accordion>
+          <mat-expansion-panel
+            class="expansion-panel"
+            (opened)="panelOpenState = true"
+            (closed)="panelOpenState = false"
+          >
+            <mat-expansion-panel-header>
+              <a class="nav-link label-title remove-decoration">
+                <mat-icon class="mat-icon-rtl-mirror">language</mat-icon>
+                <span class="label-title-text">
+                  {{ 'language.' + languageService.getCurrentLanguageCode(defaultLanguage) | translate }}
+                </span>
+              </a>
+            </mat-expansion-panel-header>
+            <a
+              *ngFor="let code of languages"
+              (click)="languageService.switchLanguage(code, true)"
+              class="nav-link label-title remove-decoration"
+              mat-menu-item
+            >
+              {{ 'language.' + code | translate }}
+            </a>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </li>
+
+      <!-- Auto refresh -->
+      <li class="nav-item">
+        <a class="nav-link label-title remove-decoration" (click)="showAutoRefreshDialog()">
+          <mat-icon class="mat-icon-rtl-mirror">rule_settings</mat-icon>
+          <span class="label-title-text">
+            {{ 'header.auto_refresh_config' | translate }}
+          </span>
+        </a>
+      </li>
+
+      <!-- Account -->
+      <li class="nav-item">
+        <a class="nav-link label-title remove-decoration" [routerLink]="['/administration/my-profile']">
+          <mat-icon class="mat-icon-rtl-mirror">account_circle</mat-icon>
+          <span class="label-title-text">
+            {{ 'users.my_profile' | translate }}
+          </span>
+        </a>
+      </li>
+
+      <!-- Logout -->
+      <li class="nav-item">
+        <a class="nav-link label-title remove-decoration" (click)="logout()" [routerLink]="['/login']">
+          <mat-icon class="mat-icon-rtl-mirror">exit_to_app</mat-icon>
+          <span class="label-title-text">
+            {{ 'common.logout' | translate }}
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

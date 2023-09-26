@@ -1,0 +1,10 @@
+<div class="mb-3" [ngClass]="fieldClasses">
+  <span class="d-flex align-items-center">
+    <mat-slide-toggle [checked]="checked" [formControl]="control" [required]="isRequired">
+      {{ label | translate }}
+    </mat-slide-toggle>
+    <button *ngIf="hint" type="button" [ngClass]="'hint-icon'" mat-icon-button [matTooltip]="hint | translate">
+      <mat-icon>info</mat-icon>
+    </button>
+  </span>
+</div>

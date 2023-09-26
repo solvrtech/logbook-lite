@@ -1,0 +1,121 @@
+<mat-toolbar class="navbar">
+  <div class="navbar__part">
+    <a [routerLink]="['/main-menu/logs']" class="navbar__title_link">
+      <span class="app-logo app-logo--white app-login--menu"></span>
+      <span class="app-title">
+        <ng-content select="[bo-title]"></ng-content>
+      </span>
+    </a>
+  </div>
+  <div class="navbar__part">
+    <button class="mobile-button" mat-icon-button disabled *ngIf="autoRefreshMessage">
+      <mat-icon><mat-spinner diameter="23"> </mat-spinner></mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
+      type="button"
+      class="mobile-button"
+      [ngClass]="{ 'is-none': autoRefreshMessage }"
+      [matMenuTriggerFor]="notif"
+      matTooltip="{{ 'header.messages' | translate }}"
+    >
+      <mat-icon
+        class="icon-color"
+        [ngClass]="{ 'in-active': totalMessage == 0 }"
+        [matBadge]="totalMessage"
+        matBadgeColor="warn"
+        >email</mat-icon
+      >
+    </button>
+    <!-- Toggle menu -->
+    <button mat-icon-button type="button" (click)="toggleMenu()" [matTooltip]="'header.show_hide_sidenav' | translate">
+      <mat-icon *ngIf="!menuOpened" class="icon-color">menu</mat-icon>
+      <mat-icon *ngIf="menuOpened" class="icon-color">menu_open</mat-icon>
+    </button>
+
+    <!-- Notification -->
+
+    <button class="dekstop-button" mat-icon-button disabled *ngIf="autoRefreshMessage">
+      <mat-icon><mat-spinner diameter="23"> </mat-spinner></mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
+      type="button"
+      class="dekstop-button"
+      [ngClass]="{ 'is-none': autoRefreshMessage }"
+      [matMenuTriggerFor]="notif"
+      matTooltip="{{ 'header.messages' | translate }}"
+    >
+      <mat-icon
+        class="icon-color"
+        [ngClass]="{ 'in-active': totalMessage == 0 }"
+        [matBadge]="totalMessage"
+        matBadgeColor="warn"
+        >email</mat-icon
+      >
+    </button>
+
+    <mat-menu #searchMenu #notif="matMenu" class="messageMenu">
+      <app-message></app-message>
+    </mat-menu>
+
+    <!-- Auto refresh -->
+    <button
+      mat-icon-button
+      type="button"
+      class="dekstop-button"
+      (click)="showAutoRefreshDialog()"
+      [matTooltip]="'header.auto_refresh_config' | translate"
+    >
+      <mat-icon class="icon-color">rule_settings</mat-icon>
+    </button>
+
+    <!-- Account -->
+    <button
+      class="user-menu-button ml-1 toolbar-button dekstop-button"
+      mat-icon-button
+      [matMenuTriggerFor]="userDropdown"
+      matTooltip="{{ 'header.user_menu' | translate }}"
+    >
+      <mat-icon class="icon-color">account_circle</mat-icon>
+    </button>
+
+    <mat-menu #userDropdown="matMenu">
+      <!-- user logged-in -->
+      <div class="username">{{ authService.currentUser?.name }}</div>
+
+      <!-- language selector -->
+      <ng-container *ngIf="languages.length > 1">
+        <button class="clear-outline" mat-menu-item [matMenuTriggerFor]="languageDropdown">
+          <mat-icon class="icon_spacer">language</mat-icon>
+          {{ 'language.' + languageService.getCurrentLanguageCode(defaultLanguage) | translate }}
+        </button>
+      </ng-container>
+
+      <!-- My profile -->
+      <button class="clear-outline" mat-menu-item [routerLink]="['/administration/my-profile']">
+        <mat-icon>account_circle</mat-icon>
+        {{ 'users.my_profile' | translate }}
+      </button>
+
+      <!-- Logout -->
+      <button class="clear-outline" mat-menu-item (click)="logout()" [routerLink]="['/login']">
+        <mat-icon>exit_to_app</mat-icon>
+        {{ 'common.logout' | translate }}
+      </button>
+    </mat-menu>
+
+    <mat-menu #languageDropdown="matMenu">
+      <button
+        *ngFor="let code of languages"
+        (click)="languageService.switchLanguage(code, true)"
+        class="clear-outline"
+        mat-menu-item
+      >
+        {{ 'language.' + code | translate }}
+      </button>
+    </mat-menu>
+  </div>
+</mat-toolbar>

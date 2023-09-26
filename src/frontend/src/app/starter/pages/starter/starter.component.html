@@ -1,0 +1,68 @@
+<app-navbar
+  (onMenuIconClick)="toggleMenu()"
+  [menuOpened]="menuOpened$ | async"
+  [languages]="languages"
+  [defaultLanguage]="defaultLanguage"
+>
+  <span bo-title>{{ subtitle }}</span>
+</app-navbar>
+
+<app-banner></app-banner>
+
+<mat-drawer-container class="sidenav-container" autosize>
+  <mat-drawer
+    #drawer
+    class="sidenav"
+    fixedInViewport="true"
+    fxLayout="column"
+    fixedTopGap="64"
+    (openedChange)="menuOpenedChanged($event)"
+    [attr.role]="isHandset ? 'dialog' : 'navigation'"
+    [mode]="isHandset ? 'over' : 'side'"
+    [opened]="!isHandset"
+    [autoFocus]="true"
+  >
+    <div class="menu-items-wrapper">
+      <app-left-sidebar
+        #sidebar
+        [menus$]="menuService.menus$"
+        (menuClicked)="onSidebarMenuClicked($event)"
+        [languages]="languages"
+        [defaultLanguage]="defaultLanguage"
+        class="menu-items"
+      ></app-left-sidebar>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="d-flex align-items-center">
+      <ng-container *ngIf="logo$.value !== null">
+        <img *ngIf="logo$.value.type === 'image'" src="{{ logo$.value.value }}" alt="" class="logo-detail-app" />
+        <i *ngIf="logo$.value.type === 'icon'" class="{{ logo$.value.value }} icon-detail-app"></i>
+      </ng-container>
+      <div class="title-and-breadcrumb" *ngIf="hasTitle$ | async">
+        <h1
+          class="page-title"
+          [ngClass]="{ 'has-right-section': (hasRightSection$ | async) }"
+          [ngClass]="{ 'has-nowrap': (hasNowrap$ | async) }"
+        >
+          {{ title$ | async }}
+        </h1>
+        <ol class="breadcrumb" [ngClass]="{ selected: breadcrumbs$.value.length < 1 }">
+          <li
+            *ngFor="let breadcrumb of breadcrumbs$ | async; last as isLast"
+            class="breadcrumb-item"
+            [ngClass]="{ active: isLast }"
+            aria-current="page"
+          >
+            <a *ngIf="!isLast; else lastRoute" [routerLink]="breadcrumb.url" routerLinkActive="active">
+              {{ breadcrumb.label | translate }}
+            </a>
+
+            <ng-template #lastRoute>{{ breadcrumb.label | translate }}</ng-template>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

@@ -1,0 +1,34 @@
+<form [formGroup]="formGroup">
+  <div class="px-3">
+    <p class="mb-0 label">{{ 'common.tags' | translate }}</p>
+    <div class="d-flex align-items-center">
+      <p *ngIf="hasPermission">
+        <mat-form-field appearance="standard" [ngClass]="{ 'form-chips': !hasPermission }">
+          <mat-chip-list #chipGrid aria-label="Enter keywords" formControlName="tags">
+            <mat-chip *ngFor="let tag of tags" (removed)="removeKeyword(tag)" color="primary">
+              {{ tag.toLowerCase() }}
+              <button matChipRemove color="warn">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip>
+          </mat-chip-list>
+          <input
+            [matChipInputFor]="chipGrid"
+            (matChipInputTokenEnd)="onAddTag($event)"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            placeholder="{{ 'common.log_input_tags' | translate }} "
+            class="chip-tags pt-3"
+          />
+        </mat-form-field>
+      </p>
+      <div *ngIf="!hasPermission" class="mt-2">
+        <span *ngIf="!tags"> - </span>
+        <ng-container *ngFor="let tag of tags">
+          <button mat-raised-button color="primary" class="mr-2 mb-2">{{ tag }}</button>
+        </ng-container>
+      </div>
+
+      <mat-spinner class="spinner" [diameter]="23" *ngIf="isLoading"></mat-spinner>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,28 @@
+.team-logo {
+  width: 20px;
+  border-radius: 50px;
+}
+
+.icon-logo {
+  font-size: 20px;
+}
+
+hr {
+  border-top: 1px dashed;
+}
+
+.is-mobile {
+  display: none;
+
+  @media (max-width: 765px) {
+    display: block;
+  }
+}
+
+.is-dekstop {
+  display: none;
+
+  @media screen and (min-width: 765px) {
+    display: flex;
+  }
+}

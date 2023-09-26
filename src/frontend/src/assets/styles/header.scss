@@ -1,0 +1,202 @@
+@import 'variables.scss';
+
+.app-logo {
+  background: url('~/assets/img/logbook-logo-navbar.svg') no-repeat center;
+  background-size: contain;
+  width: 120px;
+  height: 33px;
+
+  &.app-login--menu {
+    margin-right: 2px;
+    position: relative;
+    bottom: -2px;
+  }
+
+  &.app-logo--login {
+    width: 12rem;
+    height: 4.5em;
+    margin: 0 auto;
+  }
+
+  @media only screen and (max-width: 767px) {
+    background: url('~/assets/img/logbook-icon-2.svg') no-repeat;
+  }
+}
+
+.navbar {
+  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+
+  .navbar__title_link {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar__part {
+    align-items: center;
+    display: flex;
+  }
+}
+
+.beacon {
+  position: absolute;
+  border-radius: 50%;
+  -webkit-animation: beacon 0.4s 1 linear;
+  animation: beacon 0.4s 1 linear;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.beacon:before {
+  position: absolute;
+  content: '';
+  height: 1.5em;
+  width: 1.5em;
+  left: -23px;
+  top: 10px;
+  border: 4px solid #f44336;
+  background-color: transparent;
+  border-radius: 50%;
+  animation: active 2s infinite linear;
+}
+
+@-webkit-keyframes beacon {
+  0% {
+    -webkit-transform: scale(0.1);
+  }
+
+  100% {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes beacon {
+  0% {
+    transform: scale(0.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@-webkit-keyframes active {
+  0% {
+    -webkit-transform: scale(0.1);
+    opacity: 1;
+  }
+  70% {
+    -webkit-transform: scale(2.5);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes active {
+  0% {
+    transform: scale(0.1);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.icon-color {
+  &.in-active {
+    .mat-badge-content {
+      display: none !important;
+    }
+  }
+}
+
+.icon_spacer {
+  &.in-active {
+    .mat-badge-content {
+      display: none !important;
+    }
+  }
+}
+
+.mat-badge-content {
+  font-family: sans-serif !important;
+}
+
+.sidenav {
+  min-width: 220px;
+
+  mat-tree-node {
+    min-height: auto !important;
+  }
+
+  div.mat-tree-node {
+    min-height: 48px;
+  }
+
+  .mat-tree > mat-tree-node > div.mat-tree-node {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+
+  .mat-nested-tree-node {
+    & > .mat-tree-node {
+      padding-left: 1em;
+      padding-right: 1em;
+      border-bottom: 3px solid transparent;
+    }
+
+    ul div.mat-tree-node {
+      padding-left: 1.5em;
+      padding-right: 1em;
+    }
+
+    .mat-nested-tree-node ul div.mat-tree-node {
+      padding-left: 2.5em;
+    }
+  }
+
+  .mat-tree-node {
+    position: relative;
+
+    &.active::before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: -10em;
+      right: -16px;
+      height: 100%;
+    }
+  }
+}
+
+app-navbar {
+  .mat-badge-medium.mat-badge-above .mat-badge-content {
+    top: -14px !important;
+    left: 11px !important;
+  }
+
+  .mat-badge-medium .mat-badge-content {
+    width: 25px !important;
+    height: 25px !important;
+    line-height: 25px !important;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .app-logo {
+    width: 32px;
+  }
+  .navbar .app-title {
+    font-size: 0.6em !important;
+  }
+}

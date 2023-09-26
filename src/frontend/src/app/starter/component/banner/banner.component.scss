@@ -1,0 +1,11 @@
+@import 'variables.scss';
+
+:host {
+  .banner {
+    background-color: $primary-lighter-color;
+
+    &.is-none {
+      display: none;
+    }
+  }
+}

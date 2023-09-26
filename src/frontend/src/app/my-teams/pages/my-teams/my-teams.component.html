@@ -1,0 +1,16 @@
+<app-page
+  [title]="'title.my_teams'"
+  [hasTitle]="pageState.state != 'loaded' ? false : true"
+  [message]="pageState.message ? pageState.message : ''"
+  [state]="pageState.state"
+  [bodyTemplate]="body"
+  [breadCrumbs]="[]"
+></app-page>
+
+<ng-template #body>
+  <mat-card>
+    <mat-card-content>
+      <app-table [columns$]="columns$" [dataSource]="dataSource" [rowMenus$]="rowMenus$" [showMenus]="true"></app-table>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

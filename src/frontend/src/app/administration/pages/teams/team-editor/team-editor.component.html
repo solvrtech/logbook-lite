@@ -1,0 +1,64 @@
+<app-page-detail
+  [title]="edit ? 'team.edit_team' : 'team.create_team'"
+  [hasTitle]="pageState.state != 'loaded' ? false : true"
+  [returnUrl]="pageState.returnUrl"
+  [message]="pageState.message ? pageState.message : ''"
+  [state]="pageState.state"
+  [queryParams]="queryParams"
+  [bodyTemplate]="body"
+  [buttonsTemplate]="button"
+  [breadCrumbs]="breadCrumbs"
+></app-page-detail>
+
+<ng-template #body>
+  <form [formGroup]="formGroup">
+    <div class="px-3">
+      <p class="mb-3">
+        <app-form-input [label]="'common.name'" [control]="asFormControl(formGroup.controls['name'])"></app-form-input>
+      </p>
+
+      <p class="mb-0">{{ 'common.members' | translate }}</p>
+      <div formArrayName="members">
+        <ng-container *ngFor="let member of members; last as isLast; index as idx; let i = index">
+          <div class="row" [formGroupName]="i">
+            <div class="col">
+              <app-form-select-server-side
+                [label]="'common.user'"
+                [control]="asFormControl(member.controls['key'])"
+                [options]="users"
+                [errorTranslations]="errorTranslations.user"
+                [description]="member.controls['description'].value"
+              ></app-form-select-server-side>
+            </div>
+            <div class="col form_array" [ngClass]="isLast && members.length > 1 ? 'is_last' : ''">
+              <div class="array_form">
+                <app-form-select-search
+                  [label]="'common.role'"
+                  [control]="asFormControl(member.controls['role'])"
+                  [useSearch]="false"
+                  [options]="roles"
+                ></app-form-select-search>
+              </div>
+              <div class="array_button">
+                <div class="d-flex">
+                  <button mat-icon-button color="warn" *ngIf="members.length > 1" (click)="onRemoveMember(idx)">
+                    <mat-icon>remove_circle</mat-icon>
+                  </button>
+                  <span class="member_span" mat-icon-button color="warn" *ngIf="members.length > 1 && !isLast"></span>
+
+                  <button mat-icon-button color="primary" *ngIf="isLast" (click)="pushMembers.push(initMembers())">
+                    <mat-icon>add_circle</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <mat-divider *ngIf="!isLast" class="array_line mb-3"></mat-divider>
+        </ng-container>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<ng-template #button>
+  <app-save-button (save)="save()" [disabled]="!formGroup.valid"></app-save-button>
+</ng-template>

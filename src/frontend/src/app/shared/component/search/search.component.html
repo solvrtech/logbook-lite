@@ -1,0 +1,207 @@
+<mat-card *ngIf="formGroup != null" [ngClass]="'mb-3'">
+  <mat-card-content>
+    <form [formGroup]="formGroup">
+      <div class="search-wrapper" [ngClass]="{ 'in-active': length > 3 }">
+        <div class="search-fields">
+          <div class="row">
+            <ng-container *ngFor="let field of searchFields; let last = last">
+              <!-- TEXT -->
+              <ng-container *ngIf="!field.hide && field.type === 'TEXT'">
+                <div [class]="last && lastFieldColumnClass ? lastFieldColumnClass : fieldColumnClasses">
+                  <mat-form-field appearance="standard" class="search-input">
+                    <mat-label>{{ field.label | translate }}</mat-label>
+                    <mat-placeholder>{{ field.label | translate }}</mat-placeholder>
+                    <mat-hint>{{ field.hint ? field.hint : ('' | translate) }}</mat-hint>
+                    <input
+                      [id]="id + '_' + field.key"
+                      matInput
+                      [formControl]="formGroup.controls[field.key]"
+                      [maxlength]="field.maxLength ? field.maxLength : 0"
+                      [minlength]="field.minLength ? field.minLength : 0"
+                      autocomplete="new-password"
+                    />
+                    <mat-error *ngIf="formGroup.controls[field.key].invalid">required </mat-error>
+                  </mat-form-field>
+                </div>
+              </ng-container>
+
+              <!-- DATE -->
+              <ng-container *ngIf="!field.hide && field.type === 'DATE'">
+                <div [class]="last && lastFieldColumnClass ? lastFieldColumnClass : fieldColumnClasses">
+                  <mat-form-field appearance="standard">
+                    <mat-label>{{ field.label | translate }}</mat-label>
+                    <mat-placeholder>{{ field.label | translate }}</mat-placeholder>
+                    <mat-hint>{{ field.hint ? field.hint : ('' | translate) }}</mat-hint>
+                    <input
+                      matInput
+                      #picker1Input
+                      [matDatepicker]="picker1"
+                      (focus)="picker1.open()"
+                      [formControl]="formGroup.controls[field.key]"
+                      [min]="field.key === 'endDateTime' ? formGroup.value.startDateTime : ''"
+                      [max]="maxDate"
+                      (dateChange)="dateChange()"
+                    />
+                    <mat-datepicker #picker1 (closed)="picker1Input.blur()"></mat-datepicker>
+                    <mat-error *ngIf="formGroup.controls[field.key].invalid">required</mat-error>
+                    <ng-container matSuffix>
+                      <span class="d-flex">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"> </mat-datepicker-toggle>
+                        <button
+                          mat-icon-button
+                          *ngIf="formGroup.controls[field.key].value"
+                          (click)="onReset(field.key, field.filteredOptions)"
+                        >
+                          <mat-icon>clear</mat-icon>
+                        </button>
+                      </span>
+                    </ng-container>
+                  </mat-form-field>
+                </div>
+              </ng-container>
+
+              <!-- DROPDOWN -->
+              <ng-container *ngIf="!field.hide && field.type === 'DROPDOWN'">
+                <div [class]="last && lastFieldColumnClass ? lastFieldColumnClass : fieldColumnClasses">
+                  <mat-form-field appearance="standard">
+                    <mat-label>{{ field.label | translate }}</mat-label>
+                    <mat-placeholder>{{ field.label | translate }}</mat-placeholder>
+                    <mat-hint>{{ field.hint ? field.hint : ('' | translate) }}</mat-hint>
+                    <mat-select *ngIf="!!!field.multipleValue" matInput [formControl]="formGroup.controls[field.key]">
+                      <mat-option *ngFor="let option of field.options | async" [value]="option.value">
+                        {{ option.label | translate }}
+                      </mat-option>
+                    </mat-select>
+                    <!-- for multiple selection -->
+                    <mat-select
+                      *ngIf="!!field.multipleValue"
+                      matInput
+                      [formControl]="formGroup.controls[field.key]"
+                      multiple
+                    >
+                      <ng-template ngFor let-option [ngForOf]="field.options | async">
+                        <mat-option *ngIf="!!option.value" [value]="option.value">{{
+                          option.label | translate
+                        }}</mat-option>
+                      </ng-template>
+                    </mat-select>
+                    <ng-container matSuffix>
+                      <span class="d-flex">
+                        <button
+                          mat-icon-button
+                          *ngIf="formGroup.controls[field.key].value"
+                          (click)="onReset(field.key, field.filteredOptions)"
+                        >
+                          <mat-icon>clear</mat-icon>
+                        </button>
+                      </span>
+                    </ng-container>
+                    <mat-error *ngIf="formGroup.controls[field.key].invalid">required</mat-error>
+                  </mat-form-field>
+                </div>
+              </ng-container>
+
+              <!-- DROPDOWN SEARCH -->
+              <ng-container *ngIf="!field.hide && field.type === 'DROPSEARCH'">
+                <div [class]="last && lastFieldColumnClass ? lastFieldColumnClass : fieldColumnClasses">
+                  <mat-form-field appearance="standard">
+                    <mat-label>{{ field.label | translate }}</mat-label>
+                    <mat-hint>{{ field.hint ? field.hint : ('' | translate) }}</mat-hint>
+                    <mat-select *ngIf="!!!field.multipleValue" matInput [formControl]="formGroup.controls[field.key]">
+                      <mat-option>
+                        <ngx-mat-select-search
+                          [formControl]="field.searchForm"
+                          [searching]="searching"
+                          [placeholderLabel]="'common.search' | translate"
+                          [noEntriesFoundLabel]="'common.no_results_found' | translate"
+                        ></ngx-mat-select-search>
+                      </mat-option>
+
+                      <mat-option *ngFor="let option of field.filteredOptions | async" [value]="option.value">
+                        {{ option.label | translate }}
+                      </mat-option>
+                    </mat-select>
+                    <ng-container matSuffix>
+                      <span class="d-flex">
+                        <button
+                          mat-icon-button
+                          *ngIf="formGroup.controls[field.key].value"
+                          (click)="onReset(field.key, field.filteredOptions)"
+                        >
+                          <mat-icon>clear</mat-icon>
+                        </button>
+                      </span>
+                    </ng-container>
+                    <mat-error *ngIf="formGroup.controls[field.key].invalid">required</mat-error>
+                  </mat-form-field>
+                </div>
+              </ng-container>
+
+              <!-- CHECKBOX -->
+              <ng-container *ngIf="!field.hide && field.type === 'CHECKBOX'">
+                <div [class]="last && lastFieldColumnClass ? lastFieldColumnClass : fieldColumnClasses">
+                  <div class="search-checkbox-wrapper">
+                    <mat-checkbox [formControl]="formGroup.controls[field.key]" class="data-search__checkobox">
+                      {{ field.label | translate }}
+                    </mat-checkbox>
+                    <mat-error *ngIf="formGroup.controls[field.key].invalid">required </mat-error>
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- CHIPS -->
+              <ng-container *ngIf="!field.hide && field.type === 'CHIPS'">
+                <div [class]="last && lastFieldColumnClass ? lastFieldColumnClass : fieldColumnClasses">
+                  <mat-form-field appearance="standard" [ngClass]="{ 'chip-form': chips.length >= 1 }">
+                    <mat-label>{{ field.label | translate }}</mat-label>
+                    <mat-chip-list #chipGrid [formControl]="formGroup.controls[field.key]">
+                      <mat-chip *ngFor="let chip of chips" (removed)="remove(chip, field.key)">
+                        {{ chip.toLowerCase() }}
+                        <button matChipRemove [attr.aria-label]="'remove ' + chip">
+                          <mat-icon>cancel</mat-icon>
+                        </button>
+                      </mat-chip>
+                      <input
+                        placeholder="{{ field.label | translate }}"
+                        [matChipInputFor]="chipGrid"
+                        (matChipInputTokenEnd)="add($event, field.key)"
+                        [matChipInputAddOnBlur]="true"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      />
+                    </mat-chip-list>
+                    <mat-error *ngIf="formGroup.controls[field.key].invalid">required </mat-error>
+                  </mat-form-field>
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+        <div class="search-buttons">
+          <div class="d-flex flex-row align-items-center justify-content-start flex-row-reverse">
+            <button
+              mat-raised-button
+              type="submit"
+              [ngClass]="'ml-2'"
+              color="primary"
+              (click)="onSubmit()"
+              [disabled]="formGroup.invalid || days > rangeDate || searchDisabled"
+            >
+              <mat-icon>search</mat-icon>{{ 'common.search' | translate }}
+            </button>
+            <button
+              mat-button
+              type="button"
+              color="warn"
+              (click)="onClear()"
+              *ngIf="showResetButton"
+              [disabled]="searchDisabled"
+            >
+              <mat-icon>refresh</mat-icon>
+              {{ 'common.clear' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
