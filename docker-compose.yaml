@@ -9,9 +9,9 @@ services:
             MYSQL_ROOT_PASSWORD: password
             MYSQL_DATABASE: logbook
         ports:
-            - "49158:3306"
+            - "49140:3306"
     redis:
         image: "redis:7.0.5"
         restart: always
         ports:
-            - "49157:6379"
+            - "49141:6379"

@@ -3,7 +3,6 @@
 namespace App\Model\Response;
 
 use App\Entity\AppLogo;
-use App\Entity\BackupSetting;
 use App\Entity\HealthStatusSetting;
 use App\Entity\TeamApp;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +18,6 @@ class AppResponse
     public ?bool $isTeamManager = null;
     public array $teamApp;
     public ?HealthStatusSettingResponse $appHealthSetting;
-    public ?BackupSettingResponse $backupSetting;
 
     public function getDescription(): string
     {
@@ -134,18 +132,6 @@ class AppResponse
     public function setAppHealthSetting(?HealthStatusSetting $appHealthSetting): self
     {
         $this->appHealthSetting = $appHealthSetting?->toResponse();
-
-        return $this;
-    }
-
-    public function getBackupSetting(): ?BackupSettingResponse
-    {
-        return $this->backupSetting;
-    }
-
-    public function setBackupSetting(?BackupSetting $backupSetting): self
-    {
-        $this->backupSetting = $backupSetting?->toResponse();
 
         return $this;
     }

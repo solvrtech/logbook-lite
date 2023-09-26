@@ -37,9 +37,6 @@ class App implements ResponseEntityInterface
     #[ORM\OneToOne(mappedBy: 'app', targetEntity: HealthStatusSetting::class, cascade: ['persist'])]
     private ?HealthStatusSetting $HealthStatusSetting = null;
 
-    #[ORM\OneToOne(mappedBy: 'app', targetEntity: BackupSetting::class, cascade: ['persist'])]
-    private ?BackupSetting $backupSetting = null;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(
         name: 'created_by',
@@ -237,26 +234,6 @@ class App implements ResponseEntityInterface
         return $this;
     }
 
-    public function getBackupSetting(): ?BackupSetting
-    {
-        return $this->backupSetting;
-    }
-
-    public function setBackupSetting(?BackupSetting $backupSetting): self
-    {
-        if (null === $backupSetting && null !== $this->backupSetting) {
-            $this->backupSetting->setApp(null);
-        }
-
-        if (null !== $backupSetting && $this !== $backupSetting->getApp()) {
-            $backupSetting->setApp($this);
-        }
-
-        $this->backupSetting = $backupSetting;
-
-        return $this;
-    }
-
     public function toResponse(): AppResponse
     {
         return (new AppResponse())
@@ -267,8 +244,7 @@ class App implements ResponseEntityInterface
             ->setAppLogo($this->appLogo)
             ->setApiKey($this->apiKey)
             ->setTeamApp($this->teamApp ?? null)
-            ->setAppHealthSetting($this->HealthStatusSetting)
-            ->setBackupSetting($this->backupSetting);
+            ->setAppHealthSetting($this->HealthStatusSetting);
     }
 
     public function toStandardResponse(): AppStandardResponse
