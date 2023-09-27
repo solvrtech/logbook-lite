@@ -1,0 +1,45 @@
+:host {
+  margin: 1em 0;
+
+  .search-wrapper {
+    display: flex;
+    flex-direction: row;
+
+    .search-fields {
+      width: 100%;
+      margin-left: 0;
+      margin-right: 10px;
+    }
+    .search-buttons {
+      display: flex;
+    }
+
+    &.in-active {
+      flex-direction: column;
+      padding: 0 0.5em;
+
+      .search-buttons {
+        justify-content: flex-end;
+      }
+    }
+  }
+
+  @media (max-width: 1199px) {
+    .search-wrapper {
+      flex-direction: column;
+
+      .search-fields {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      .search-input {
+        width: 100%;
+      }
+
+      .search-buttons {
+        justify-content: flex-end;
+      }
+    }
+  }
+}

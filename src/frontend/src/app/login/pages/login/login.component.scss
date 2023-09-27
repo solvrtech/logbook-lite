@@ -1,0 +1,42 @@
+@import 'variables.scss';
+
+:host {
+  .link {
+    text-decoration: none;
+  }
+  .half {
+    height: 100vh;
+
+    .container > .row {
+      height: 100vh;
+    }
+
+    .bg-login {
+      width: 50%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-image: url('/assets/img/background.jpg');
+    }
+
+    .login-wrapper {
+      width: 50%;
+
+      @media screen and (max-width: 991px) {
+        width: 100%;
+      }
+
+      h1 {
+        color: $primary-color;
+      }
+
+      .mat-form-field {
+        max-width: 340px;
+      }
+
+      .password-icon {
+        cursor: pointer;
+      }
+    }
+  }
+}

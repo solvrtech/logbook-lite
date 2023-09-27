@@ -1,0 +1,75 @@
+<mat-card>
+  <div class="px-3">
+    <mat-card-title class="title_card">{{ 'common.email' | translate }}</mat-card-title>
+    <mat-card-subtitle>{{ subtitle | translate }}</mat-card-subtitle>
+  </div>
+
+  <mat-card-content>
+    <div class="px-3">
+      <form [formGroup]="formGroup">
+        <!-- SMTP host -->
+        <app-form-input
+          [label]="'app.SMTP_host'"
+          [control]="asFormControl(formGroup.controls['host'])"
+          [hintMax]="255"
+        ></app-form-input>
+
+        <!-- SMTP port -->
+        <app-form-input
+          [label]="'app.SMTP_port'"
+          [control]="asFormControl(formGroup.controls['port'])"
+          [hintMax]="3"
+          [type]="'number'"
+        ></app-form-input>
+
+        <app-form-input
+          [label]="'app.username'"
+          [control]="asFormControl(formGroup.controls['username'])"
+        ></app-form-input>
+
+        <app-form-toggle
+          *ngIf="mailSetting != null"
+          [fieldClasses]="'mt-3'"
+          [label]="'users.edit_password'"
+          [control]="asFormControl(formGroup.controls['changePassword'])"
+          (valueChanged)="onChangePasswordChanged($event)"
+        ></app-form-toggle>
+
+        <ng-container *ngIf="formGroup.controls['changePassword'].value === true || mailSetting == null">
+          <app-form-password
+            [label]="'app.password'"
+            [control]="asFormControl(formGroup.controls['password'])"
+          ></app-form-password>
+        </ng-container>
+
+        <mat-form-field appearance="standard">
+          <mat-label>{{ 'app.encryption' | translate }}</mat-label>
+          <mat-select [formControl]="asFormControl(formGroup.controls['encryption'])">
+            <mat-option *ngFor="let item of encryption" value="{{ item.value }}">
+              {{ item.description | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <app-form-input
+          [label]="'app.from_email'"
+          [control]="asFormControl(formGroup.controls['email'])"
+          [hintMax]="255"
+          [hint]="'app.hint.from_email'"
+        ></app-form-input>
+
+        <app-form-input
+          [label]="'app.from_name'"
+          [control]="asFormControl(formGroup.controls['name'])"
+          [hintMax]="255"
+          [hint]="'app.hint.from_name'"
+        ></app-form-input>
+      </form>
+    </div>
+  </mat-card-content>
+
+  <mat-divider></mat-divider>
+  <mat-card-actions align="end" class="form-buttons">
+    <app-save-button (save)="checkMailConnection()" [disabled]="formGroup.invalid"></app-save-button>
+  </mat-card-actions>
+</mat-card>

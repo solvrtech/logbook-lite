@@ -1,0 +1,95 @@
+<div class="messages d-flex">
+  <p>{{ 'header.messages' | translate }}</p>
+  <div class="d-flex ms-auto">
+    <a
+      type="button"
+      class="mx-2"
+      *ngIf="totalMessage != 0"
+      (click)="onDeleteAllMessages($event)"
+      matTooltip="{{ 'message.mark_all_as_read' | translate }}"
+    >
+      <mat-icon> mark_email_read </mat-icon>
+    </a>
+
+    <a
+      *ngIf="!isLoading && !autoRefresh"
+      type="button"
+      (click)="refreshMessage($event)"
+      matTooltip="{{ 'common.refresh' | translate }}"
+    >
+      <mat-icon> refresh</mat-icon>
+    </a>
+    <div class="justify-content-center">
+      <mat-spinner class="spinner" [diameter]="23" *ngIf="isLoading"></mat-spinner>
+    </div>
+  </div>
+</div>
+
+<mat-divider></mat-divider>
+
+<!-- show messages -->
+<ng-container *ngIf="totalMessage != 0; else noHaveMessage">
+  <div class="message-menu-scroll message-menu">
+    <ng-container *ngFor="let message of messages | async; let rowIndex = index">
+      <div class="message d-flex">
+        <div class="drop-img cover-image" *ngIf="message.app.appLogo != null; else icon">
+          <img [src]="message.app.appLogo" alt="logo" class="drop-img cover-image" />
+        </div>
+        <ng-template #icon>
+          <span class="icon-message">
+            <i [ngClass]="messageIcon(message.app.type)"></i>
+          </span>
+        </ng-template>
+        <div class="w-100 text-message">
+          <a (click)="onShowMessage(message.id, message.createdAt, message.app.type, message)" class="message-button">
+            <div class="d-flex">
+              <h5 class="mb-0 name">{{ message.app.name }}</h5>
+            </div>
+            <p class="mb-0">{{ setMessage(message.message) }}</p>
+          </a>
+
+          <div class="d-flex">
+            <p class="label mb-0 mt-2 mr-2">{{ messageDateTime(message.createdAt) }}</p>
+            <p class="label mb-0 mt-2">
+              <mat-icon>check_small</mat-icon>
+            </p>
+            <p class="label mb-0 mt-2">
+              <a type="button" (click)="onDeleteMessage(message.id, $event)">{{ 'common.read' | translate }}</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="totalMessage >= 300; else LoadMore">
+      <a mat-button class="text-decoration-none" [routerLink]="'/messages'" class="mx-2">
+        {{ 'message.to_many_messages' | translate }}
+      </a>
+    </ng-container>
+
+    <ng-template #LoadMore>
+      <div class="message text-center">
+        <div class="d-flex justify-content-center">
+          <mat-spinner class="spinner" [diameter]="23" *ngIf="isLoadingMore"></mat-spinner>
+        </div>
+        <ng-container *ngIf="!isLoadingMore">
+          <a
+            mat-button
+            class="text-decoration-none"
+            *ngIf="paginateData.last == false && paginateData.totalItems > 25"
+            (click)="loadMore($event, paginateData.size)"
+          >
+            <mat-icon> arrow_downward </mat-icon>
+            {{ 'message.load_more' | translate }}
+          </a>
+        </ng-container>
+      </div>
+    </ng-template>
+  </div>
+</ng-container>
+
+<!-- messages empty -->
+<ng-template #noHaveMessage>
+  <div class="message empty">
+    <p>{{ 'header.do_not_have_message' | translate }}</p>
+  </div>
+</ng-template>

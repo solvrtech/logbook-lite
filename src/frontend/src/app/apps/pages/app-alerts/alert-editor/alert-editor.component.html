@@ -1,0 +1,219 @@
+<app-page-detail
+  [title]="title ? title : edit ? 'title.edit_alert' : 'title.create_alert'"
+  [hasTitle]="pageState.state != 'loaded' ? false : true"
+  [message]="pageState.message ? pageState.message : ''"
+  [returnUrl]="pageState.returnUrl"
+  [state]="pageState.state"
+  [queryParams]="queryParams"
+  [breadCrumbs]="breadCrumbs ? breadCrumbs : pageBreadCrumbs"
+  [bodyTemplate]="body"
+  [buttonsTemplate]="button"
+></app-page-detail>
+
+<ng-template #body>
+  <form [formGroup]="formGroup">
+    <div class="px-3">
+      <!-- name -->
+      <app-form-input
+        [label]="'common.name'"
+        [control]="asFormControl(formGroup.controls['name'])"
+        [hintMax]="255"
+      ></app-form-input>
+
+      <!-- active -->
+      <app-form-toggle
+        [label]="'common.active'"
+        [control]="asFormControl(formGroup.controls['active'])"
+      ></app-form-toggle>
+
+      <!-- source -->
+      <app-form-select-search
+        [label]="'common.source'"
+        [control]="asFormControl(formGroup.controls['source'])"
+        [useSearch]="false"
+        [options]="sources"
+        (valueChanged)="onChangeSeverity($event)"
+      ></app-form-select-search>
+
+      <!-- logs -->
+      <ng-container *ngIf="formGroup.controls['source'].value === 'log'">
+        <hr />
+        <h2 class="mb-0">{{ 'common.condition' | translate }}</h2>
+        <p class="mat-card-subtitle">{{ 'common.send_notification' | translate }}</p>
+
+        <app-form-select-search-multiple
+          [label]="'common.severity'"
+          [control]="asFormControl(formGroup.controls['severity'])"
+          [useSearch]="false"
+          [options]="severities"
+        ></app-form-select-search-multiple>
+
+        <app-form-input
+          [label]="'common.how_many_times'"
+          [control]="asFormControl(formGroup.controls['howManyTimes'])"
+          [type]="'number'"
+          [min]="1"
+          [hint]="'hint.alert.logs.how_many_times'"
+        ></app-form-input>
+
+        <app-form-input
+          [label]="'common.with_in_duration_of'"
+          [control]="asFormControl(formGroup.controls['duration'])"
+          [type]="'number'"
+          [min]="1"
+          [hint]="'hint.alert.logs.with_in_duration_of'"
+        ></app-form-input>
+
+        <h3 class="mb-0 title_card">{{ 'common.filter' | translate }}</h3>
+        <p class="mat-card-subtitle">{{ 'common.subtitle_filter' | translate }}</p>
+        <app-form-input
+          [label]="'common.message'"
+          [control]="asFormControl(formGroup.controls['message'])"
+        ></app-form-input>
+
+        <app-form-input
+          [label]="'Stacktrace'"
+          [control]="asFormControl(formGroup.controls['stacktrace'])"
+        ></app-form-input>
+
+        <app-form-input [label]="'Browser'" [control]="asFormControl(formGroup.controls['browser'])"></app-form-input>
+
+        <app-form-input [label]="'OS'" [control]="asFormControl(formGroup.controls['os'])"></app-form-input>
+
+        <app-form-input [label]="'Device'" [control]="asFormControl(formGroup.controls['device'])"></app-form-input>
+
+        <app-form-input
+          [label]="'Additional'"
+          [control]="asFormControl(formGroup.controls['additional'])"
+        ></app-form-input>
+      </ng-container>
+
+      <!-- healthSignal -->
+      <ng-container *ngIf="formGroup.controls['source'].value === 'health'">
+        <hr />
+        <h2 class="mb-0">{{ 'common.condition' | translate }}</h2>
+        <p class="mat-card-subtitle">{{ 'common.send_notification' | translate }}</p>
+        <ng-container *ngIf="formGroup.controls['period'].value">
+          <app-form-input
+            [label]="'common.expected_health_sinyal'"
+            [control]="asFormControl(formGroup.controls['period'])"
+          ></app-form-input>
+        </ng-container>
+
+        <app-form-input
+          [label]="'common.how_many_times'"
+          [control]="asFormControl(formGroup.controls['howManyTimes'])"
+          [type]="'number'"
+          [min]="1"
+          [hint]="'hint.alert.health_signal.how_many_times'"
+        ></app-form-input>
+
+        <h2 class="mb-0">{{ 'common.spesific_condition' | translate }}</h2>
+        <div formArrayName="specifics">
+          <ng-container *ngFor="let specific of specifics; last as isLast; index as idx; let i = index">
+            <div class="row" [formGroupName]="i">
+              <div class="col">
+                <app-form-select-search
+                  [label]="'health.key'"
+                  [control]="asFormControl(specific.controls['key'])"
+                  [useSearch]="false"
+                  [options]="checkKeys"
+                  [hint]="'app.health.for_more_info'"
+                  (info)="infoHealthCheck($event)"
+                  [dialog]="true"
+                  [errorTranslations]="errorTranslations.name"
+                  (valueChanged)="onChangeItem($event, idx)"
+                ></app-form-select-search>
+              </div>
+              <div class="col">
+                <mat-form-field appearance="standard">
+                  <mat-label>{{ 'health.item' | translate }}</mat-label>
+                  <mat-select formControlName="item" (selectionChange)="onChangeStatus($event, idx)">
+                    <mat-option *ngFor="let item of items[i]" value="{{ item.value }}">
+                      {{ item.description | translate }}
+                      <ng-container *ngIf="item.value != 'status' && item.value != 'redisSize'"> (>=) </ng-container>
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col d-flex align-items-center">
+                <div class="form-gate">
+                  <ng-container *ngIf="specific.controls['item'].value == 'status'">
+                    <app-form-input
+                      [label]="'health.value'"
+                      [control]="asFormControl(specific.controls['value'])"
+                    ></app-form-input>
+                  </ng-container>
+                  <ng-container *ngIf="specific.controls['item'].value != 'status'">
+                    <mat-form-field appearance="standard">
+                      <mat-label>{{ 'health.value' | translate }}</mat-label>
+                      <input
+                        matInput
+                        formControlName="value"
+                        required="required"
+                        (change)="onChangeValue(specific.controls['item'].value, i, $event)"
+                      />
+                      <mat-error *ngIf="specific.controls['value'].errors">
+                        {{ 'common.form.invalid' | translate }}
+                      </mat-error>
+                      <mat-hint [ngClass]="'hint'">
+                        <ng-container *ngFor="let hint of hintValue(specific.controls['item'].value, i)">
+                          <div class="input-hint">{{ hint | translate }}</div>
+                        </ng-container>
+                      </mat-hint>
+                    </mat-form-field>
+                  </ng-container>
+                </div>
+
+                <button mat-icon-button color="warn" (click)="removeSpecific(idx)">
+                  <mat-icon>remove_circle</mat-icon>
+                </button>
+              </div>
+            </div>
+            <mat-divider class="mt-2"></mat-divider>
+          </ng-container>
+          <div class="mt-3 d-flex justify-content-center">
+            <a mat-button color="primary" (click)="specificPush.push(addSpecifics())" class="text-decoration-none">
+              <ng-container *ngIf="specifics.length == 0; else addMore">{{ 'common.add' | translate }}</ng-container>
+              <ng-template #addMore>{{ 'common.add_more' | translate }}</ng-template>
+            </a>
+          </div>
+        </div>
+      </ng-container>
+
+      <hr />
+      <h2 class="mb-0">{{ 'app.alert.send_notification' | translate }}</h2>
+      <div class="mb-4">
+        <app-form-select-search
+          [label]="'common.notify'"
+          [control]="asFormControl(formGroup.controls['notify'])"
+          [useSearch]="false"
+          [options]="notifies"
+          [hint]="'hint.alert.notify'"
+        ></app-form-select-search>
+      </div>
+
+      <app-form-toggle
+        [label]="'common.use_notify_limit'"
+        [control]="asFormControl(formGroup.controls['useNotifyLimit'])"
+        (valueChanged)="onChangeNotifyLimit($event)"
+      ></app-form-toggle>
+
+      <ng-container *ngIf="formGroup.controls['useNotifyLimit'].value === true">
+        <app-form-input
+          [label]="'common.notification_limit'"
+          [control]="asFormControl(formGroup.controls['notifyLimit'])"
+          [type]="'number'"
+          [min]="1"
+          [hint]="'hint.alert.notification_limit'"
+        ></app-form-input>
+      </ng-container>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #button>
+  <ng-container *ngIf="!hasAccess">
+    <app-save-button (save)="save()" [disabled]="formGroup.invalid"></app-save-button>
+  </ng-container>
+</ng-template>

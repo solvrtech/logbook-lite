@@ -1,0 +1,120 @@
+<ng-container>
+  <h3 mat-dialog-title *ngIf="type === actions.check">{{ 'mail.title_check' | translate }}</h3>
+  <h3 mat-dialog-title *ngIf="type === actions.validate">{{ 'mail.title_validate' | translate }}</h3>
+  <div mat-dialog-content>
+    <ng-container *ngIf="type === actions.check">
+      <p>
+        {{ 'mail.settings_confirm_intro' | translate }}
+      </p>
+      <form [formGroup]="checkForm" class="py-3">
+        <mat-form-field appearance="standard">
+          <mat-label>{{ 'mail.label_to' | translate }}</mat-label>
+          <input matInput formControlName="email" />
+        </mat-form-field>
+      </form>
+    </ng-container>
+
+    <ng-container *ngIf="type === actions.validate">
+      <div class="row d-flex justify-content-center">
+        <div class="col-8 text-center">
+          <p [innerHTML]="'mail.enter_token' | translate : { email: recipientEmail }" class="py-3 mb-0"></p>
+        </div>
+      </div>
+      <form [formGroup]="validateForm">
+        <div class="row d-flex justify-content-center mb-0">
+          <p class="form-input">
+            <mat-form-field appearance="standard">
+              <input
+                id="digit1"
+                type="text"
+                maxlength="1"
+                matInput
+                formControlName="digit1"
+                (paste)="paste($event)"
+                (keyup)="inputKeyUp($event, 1)"
+                autofocus
+              />
+            </mat-form-field>
+          </p>
+
+          <p class="form-input">
+            <mat-form-field appearance="standard">
+              <input
+                id="digit2"
+                type="text"
+                maxlength="1"
+                matInput
+                formControlName="digit2"
+                (keyup)="inputKeyUp($event, 2)"
+              />
+            </mat-form-field>
+          </p>
+
+          <p class="form-input">
+            <mat-form-field appearance="standard">
+              <input
+                id="digit3"
+                type="text"
+                maxlength="1"
+                matInput
+                formControlName="digit3"
+                (keyup)="inputKeyUp($event, 3)"
+              />
+            </mat-form-field>
+          </p>
+          <p class="form-input">
+            <mat-form-field appearance="standard">
+              <input
+                id="digit4"
+                type="text"
+                maxlength="1"
+                matInput
+                formControlName="digit4"
+                (keyup)="inputKeyUp($event, 4)"
+              />
+            </mat-form-field>
+          </p>
+          <p class="form-input">
+            <mat-form-field appearance="standard">
+              <input
+                id="digit5"
+                type="text"
+                maxlength="1"
+                matInput
+                formControlName="digit5"
+                (keyup)="inputKeyUp($event, 5)"
+              />
+            </mat-form-field>
+          </p>
+          <p class="form-input">
+            <mat-form-field appearance="standard">
+              <input
+                id="digit6"
+                type="text"
+                maxlength="1"
+                matInput
+                formControlName="digit6"
+                (keyup)="inputKeyUp($event, 6)"
+              />
+            </mat-form-field>
+          </p>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+
+  <div mat-dialog-actions [ngClass]="'d-flex flex-row-reverse'">
+    <button
+      mat-raised-button
+      (click)="send()"
+      [disabled]="checkForm.invalid && validateForm.invalid"
+      color="primary"
+      class="ml-2"
+    >
+      {{ btnTitle | translate }}
+    </button>
+    <a mat-button (click)="close()" class="text-decoration-none">
+      {{ 'common.close' | translate }}
+    </a>
+  </div>
+</ng-container>

@@ -1,0 +1,11 @@
+<app-detail-log
+  [log]="log"
+  [breadCrumbs]="breadCrumbs"
+  [state]="pageState.state"
+  [returnUrl]="pageState.returnUrl"
+  [date]="date"
+  [message]="pageState.message ? pageState.message : ''"
+  [queryParams]="queryParams"
+  [comments]="comments"
+  [hasTitle]="pageState.state != 'loaded' ? false : true"
+></app-detail-log>

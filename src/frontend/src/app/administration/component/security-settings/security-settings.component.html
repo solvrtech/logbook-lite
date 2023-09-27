@@ -1,0 +1,62 @@
+<mat-card>
+  <div class="px-3">
+    <mat-card-title class="title_card">{{ 'common.security_settings' | translate }}</mat-card-title>
+  </div>
+  <mat-card-content>
+    <div class="px-3">
+      <form [formGroup]="formGroup">
+        <app-form-input
+          [label]="'common.waiting_time'"
+          [type]="'number'"
+          [hint]="'hint.waiting_time'"
+          [hintMax]="3"
+          [control]="asFormControl(formGroup.controls['waiting_time'])"
+        ></app-form-input>
+
+        <app-form-input
+          [label]="'common.max_login'"
+          [type]="'number'"
+          [hint]="'hint.max_login'"
+          [control]="asFormControl(formGroup.controls['max_login'])"
+        ></app-form-input>
+
+        <mat-divider class="mt-3 mb-3"></mat-divider>
+
+        <app-form-toggle
+          [label]="'common.enable_two_factor'"
+          [control]="asFormControl(formGroup.controls['enabled'])"
+          [hint]="'hint.enable_two_factor'"
+          (valueChanged)="onChange($event)"
+        ></app-form-toggle>
+
+        <ng-container *ngIf="formGroup.controls['enabled'].value === true">
+          <app-form-input
+            [label]="'common.delay_to_resend'"
+            [type]="'number'"
+            [hint]="'hint.delay_to_resend'"
+            [hintMax]="3"
+            [control]="asFormControl(formGroup.controls['delay'])"
+          ></app-form-input>
+
+          <app-form-input
+            [label]="'common.max_failed'"
+            [type]="'number'"
+            [hint]="'hint.max_failed'"
+            [control]="asFormControl(formGroup.controls['max_failed'])"
+          ></app-form-input>
+
+          <app-form-input
+            [label]="'common.max_resend'"
+            [type]="'number'"
+            [hint]="'hint.max_resend'"
+            [control]="asFormControl(formGroup.controls['max_resend'])"
+          ></app-form-input>
+        </ng-container>
+      </form>
+    </div>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions align="end" class="form-buttons">
+    <app-save-button (save)="save()" [disabled]="formGroup.invalid"></app-save-button>
+  </mat-card-actions>
+</mat-card>

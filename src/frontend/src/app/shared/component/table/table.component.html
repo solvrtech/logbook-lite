@@ -1,0 +1,225 @@
+<div [class]="tableWrapperClasses">
+  <mat-toolbar *ngIf="showToolbar">
+    <div class="table-toolbar-buttons">
+      <!-- template outle for left-most buttons -->
+      <div class="left-buttons mr-auto">
+        <ng-container *ngIf="checkBoxMenu">
+          <div class="align-items-center d-flex">
+            <mat-checkbox
+              #checkBoxx
+              *ngIf="showTable"
+              color="primary"
+              class="px-3"
+              (click)="$event.stopPropagation()"
+              (change)="$event ? allSelected(checkBoxx) : null; rowSelected.emit(selection.selected)"
+              [checked]="selected && selection.hasValue() && isAllSelected()"
+              [indeterminate]="selected && selection.hasValue() && !isAllSelected()"
+            >
+              <span>{{ 'message.select_all' | translate }}</span>
+            </mat-checkbox>
+
+            <button
+              *ngIf="selection.selected.length > 0 && selected"
+              mat-raised-button
+              color="primary"
+              (click)="markAllSelected.emit()"
+            >
+              {{ 'message.mark_as_read' | translate }}
+            </button>
+          </div>
+        </ng-container>
+
+        <ng-container *ngTemplateOutlet="leftButtonsTemplate"></ng-container>
+      </div>
+      <!-- template outle for right-most buttons -->
+      <div *ngIf="rightButtonsTemplate" class="pl-auto right-buttons">
+        <ng-container *ngTemplateOutlet="rightButtonsTemplate"></ng-container>
+      </div>
+    </div>
+  </mat-toolbar>
+  <table mat-table [dataSource]="dataSource" [hidden]="!showTable" [class.responsive-now]="responsiveNow">
+    <!-- Checkbox Column -->
+    <ng-container *ngIf="checkBoxMenu" matColumnDef="check-box">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element; let rowIndex = index">
+        <mat-checkbox
+          #checkBox
+          color="primary"
+          [value]="element"
+          (click)="$event.stopPropagation()"
+          (change)="$event ? selection.toggle(element) : null; rowSelected.emit(selection.selected)"
+          [checked]="selection.isSelected(element)"
+        >
+        </mat-checkbox>
+      </td>
+    </ng-container>
+    <ng-container *ngIf="useSelection" matColumnDef="selectRow">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element; let rowIndex = index">
+        <mat-radio-button
+          color="primary"
+          [value]="rowIndex"
+          (click)="rowSelected.emit(element)"
+          [checked]="element.selected"
+        ></mat-radio-button>
+      </td>
+    </ng-container>
+    <!-- rows (except for menu items) -->
+    <ng-container *ngFor="let column of columnDefs; let colIndex = index" [matColumnDef]="column.key">
+      <th mat-header-cell *matHeaderCellDef [ngClass]="getHeaderClasses(column)">
+        {{ column.name | translate }}
+      </th>
+      <td
+        mat-cell
+        *matCellDef="let element; let rowIndex = index"
+        [ngClass]="getCellClasses(column, element, rowIndex, colIndex)"
+      >
+        <span class="mobile-label">{{ column.name | translate }}</span>
+        <ng-container [ngSwitch]="column.type" *ngIf="column.hide ? column.hide(element) !== true : true">
+          <div class="d-flex align-items-center">
+            <ng-container *ngIf="column.logo">
+              <img
+                *ngIf="column.logo(element) != null; else icon"
+                [ngClass]="'table-app-logo'"
+                [src]="column.logo(element)"
+                alt=""
+              />
+              <ng-template #icon>
+                <i [ngClass]="column.icon ? column.icon(element) : 'd-none'" class="mr-2"></i>
+              </ng-template>
+            </ng-container>
+
+            <span
+              (click)="column.action ? column.action($event) : ''"
+              [ngClass]="column.badge ? column.badge(element) : ''"
+              *ngSwitchDefault
+            >
+              {{ column.total ? column.total(element) : null }}
+              {{ (column.getValue ? column.getValue(element) : element[column.key]) | nonull }}</span
+            >
+          </div>
+
+          <span *ngSwitchCase="'text'">{{
+            (column.getValue ? column.getValue(element) : element[column.key]) | nonull
+          }}</span>
+          <span *ngSwitchCase="'html'" [innerHTML]="column.getValue ? column.getValue(element) : element[column.key]">
+          </span>
+          <span *ngSwitchCase="'toggle'">
+            <mat-slide-toggle
+              [checked]="column.getValue ? column.getValue(element) : element[column.key]"
+              (change)="column.toggleChange ? column.toggleChange($event, element) : element"
+            ></mat-slide-toggle>
+          </span>
+          <span *ngSwitchCase="'template'">
+            <ng-container
+              *ngTemplateOutlet="
+                column.getTemplate ? column.getTemplate(element) : element;
+                context: {
+                  rowData: element,
+                  key: column.key,
+                  value: column.getValue ? column.getValue(element) : element[column.key]
+                }
+              "
+            ></ng-container>
+          </span>
+
+          <mat-chip-list *ngSwitchCase="'chips'">
+            <ng-container *ngIf="isArray(element[column.key])">
+              <span *ngFor="let chip of element[column.key]">
+                <mat-chip *ngIf="chip[column.chipKey ? column.chipKey : '']">
+                  {{ chip[column.chipKey ? column.chipKey : ''] | nonull }}
+                </mat-chip>
+              </span>
+            </ng-container>
+            <ng-container *ngIf="!isArray(element[column.key]) && element[column.key]">
+              <mat-chip *ngIf="element[column.key][column.chipKey ? column.chipKey : '']">
+                {{ element[column.key][column.chipKey ? column.chipKey : ''] | nonull }}
+              </mat-chip>
+            </ng-container>
+          </mat-chip-list>
+        </ng-container>
+      </td>
+      <ng-container *ngIf="showFooter">
+        <td mat-footer-cell *matFooterCellDef [ngClass]="getFooterClasses(column)">
+          <ng-container *ngIf="column.footerDefaultValue; else footerValue">
+            {{ column.footerDefaultValue | translate }}
+          </ng-container>
+          <ng-template #footerValue>
+            {{
+              column.getFooterValue ? column.getFooterValue(footer) : footer[column.footerKey ? column.footerKey : '']
+            }}
+          </ng-template>
+        </td>
+      </ng-container>
+    </ng-container>
+
+    <!-- row menus -->
+    <ng-container role="menu" matColumnDef="menus" class="sticky-end-column">
+      <th mat-header-cell *matHeaderCellDef class="row-menu-header"></th>
+      <td mat-cell *matCellDef="let element" class="mat-action-list">
+        <span *ngFor="let menu of inputRowMenus">
+          <button
+            *ngIf="menu.hide ? menu.hide(element) !== true : true"
+            mat-icon-button
+            class="row-menu-items"
+            [attr.aria-label]="menu.label | translate"
+            [matTooltip]="menu.label | translate"
+            (click)="menu.action($event, element)"
+            (contextmenu)="onRowContextMenu($event, menu, element)"
+          >
+            <mat-icon>{{ menu.icon }}</mat-icon>
+          </button>
+        </span>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; let i = index; columns: displayedColumns"
+      [ngClass]="tableRowClasses[i] ? tableRowClasses[i].classes : ''"
+    ></tr>
+    <ng-container *ngIf="showFooter">
+      <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+    </ng-container>
+  </table>
+
+  <mat-card class="{{ noDataClass }}" *ngIf="!showTable">
+    <mat-card-content>{{ noDataText | translate }}</mat-card-content>
+  </mat-card>
+
+  <div [hidden]="!usePaging || (usePaging && !showTable)">
+    <mat-paginator [length]="dataCount" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
+  </div>
+
+  <div
+    style="visibility: hidden; position: fixed"
+    [style.left]="contextMenuPosition.x"
+    [style.top]="contextMenuPosition.y"
+    [matMenuTriggerFor]="contextMenu"
+  ></div>
+  <mat-menu #contextMenu="matMenu">
+    <ng-template matMenuContent let-row="row" let-menu="menu" let-type="type" let-link="link">
+      <button
+        mat-menu-item
+        (click)="
+          type === 'ROW'
+            ? openInNewTabOrWindowRowMenu($event, menu, row, 'TAB')
+            : openInNewTabOrWindowButton($event, link, 'TAB')
+        "
+      >
+        {{ 'common.open_new_tab' | translate }}
+      </button>
+      <button
+        mat-menu-item
+        (click)="
+          type === 'ROW'
+            ? openInNewTabOrWindowRowMenu($event, menu, row, 'WINDOW')
+            : openInNewTabOrWindowButton($event, link, 'WINDOW')
+        "
+      >
+        {{ 'common.open_new_window' | translate }}
+      </button>
+    </ng-template>
+  </mat-menu>
+</div>

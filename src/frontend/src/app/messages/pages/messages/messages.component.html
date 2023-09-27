@@ -1,0 +1,27 @@
+<app-page
+  [title]="'header.messages'"
+  [hasTitle]="pageState.state != 'loaded' ? false : true"
+  [message]="pageState.message ? pageState.message : ''"
+  [state]="pageState.state"
+  [bodyTemplate]="body"
+  [breadCrumbs]="[]"
+></app-page>
+
+<ng-template #body>
+  <mat-card>
+    <mat-card-content>
+      <app-table
+        [dataSource]="dataSource"
+        [columns$]="columns$"
+        [rowMenus$]="rowMenus$"
+        [showMenus]="true"
+        [checkBoxMenu]="true"
+        (rowSelected)="onMessageSelected($event)"
+        (markAllSelected)="deleteAllMessages()"
+        [selected]="selected"
+        [leftButtonsTemplate]="button"
+      ></app-table>
+      <ng-template #button> </ng-template>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

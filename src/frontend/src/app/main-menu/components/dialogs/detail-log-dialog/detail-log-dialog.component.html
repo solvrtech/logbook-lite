@@ -1,0 +1,163 @@
+<ng-container *ngIf="app">
+  <div mat-dialog-title class="d-flex align-items-center">
+    <ng-container *ngIf="app.appLogo != null; else icon">
+      <img alt="" class="logo-detail-app" [src]="app.appLogo" />
+    </ng-container>
+    <ng-template #icon>
+      <span class="icon-message">
+        <i [ngClass]="appIcon(app.type)"></i>
+      </span>
+    </ng-template>
+    <p class="page-title">{{ app.name }}</p>
+  </div>
+</ng-container>
+
+<mat-dialog-content *ngIf="log">
+  <div class="row mt-3">
+    <div class="mb-3 col-lg-8 col-12 px-3">
+      <mat-card>
+        <div class="px-3">
+          <ng-container *ngIf="log.dateTime">
+            <p class="mb-1 label">{{ 'common.datetime' | translate }}</p>
+            <p>{{ dateTime(log.dateTime) }}</p>
+          </ng-container>
+
+          <ng-container *ngIf="log.instanceId">
+            <p class="mb-1 label">{{ 'common.instanceid' | translate }}</p>
+            <p>{{ log.instanceId }}</p>
+          </ng-container>
+
+          <ng-container *ngIf="log.level">
+            <p class="mb-1 label">{{ 'common.level' | translate }}</p>
+            <p>
+              <span mat-dialog-subtitle [ngClass]="badgeLogLevel(log.level)">{{ log.level }}</span>
+            </p>
+          </ng-container>
+
+          <ng-container *ngIf="log.message">
+            <p class="mb-1 label">{{ 'common.message' | translate }}</p>
+            <p class="break">{{ log.message }}</p>
+          </ng-container>
+
+          <ng-container *ngIf="log.appVersion">
+            <p class="mb-1 label">{{ 'common.app_version' | translate }}</p>
+            <p class="mb-1">{{ 'title.app' | translate }}: {{ log.appVersion.app ? log.appVersion.app : '-' }}</p>
+            <p>{{ 'common.core' | translate }}: {{ log.appVersion.core ? log.appVersion.core : '-' }}</p>
+          </ng-container>
+
+          <ng-container *ngIf="log.device">
+            <p class="mb-1 label">Device</p>
+            <p>{{ log.device }}</p>
+          </ng-container>
+
+          <ng-container *ngIf="log.os">
+            <p class="mb-1 label">OS</p>
+            <p>{{ log.os }}</p>
+          </ng-container>
+
+          <ng-container *ngIf="log.browser">
+            <p class="mb-1 label">Browser</p>
+            <p>{{ log.browser }}</p>
+          </ng-container>
+
+          <ng-container *ngIf="log.file">
+            <p class="mb-1 label">File</p>
+            <p class="break">{{ log.file }}</p>
+          </ng-container>
+
+          <div class="my-2" *ngIf="log.stackTrace.length != 0">
+            <p class="mb-1 label">Stacktrace</p>
+            <pre><code [highlight]="stackTraceLog" [languages]="['typescript']"></code></pre>
+          </div>
+
+          <div class="my-2" *ngIf="log.additional.length != 0">
+            <p class="mb-1 label">Additional</p>
+            <pre>
+                  <code [highlight]="additional" [languages]="['typescript']"></code>
+              </pre>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="mb-3 col-lg-4 col-12">
+      <mat-card class="mb-3">
+        <mat-card-content class="status_log">
+          <app-status [status]="log.status" [idLog]="logId" [hasPermission]="permission"></app-status>
+        </mat-card-content>
+        <mat-divider></mat-divider>
+
+        <mat-card-content class="log_content">
+          <app-priority [hasPermission]="permission" [idLog]="logId" [priority]="log.priority"></app-priority>
+        </mat-card-content>
+        <mat-divider></mat-divider>
+
+        <mat-card-content class="log_content">
+          <app-assignee [hasPermission]="permission" [idLog]="logId" [assignee]="log.assignee"></app-assignee>
+        </mat-card-content>
+        <mat-divider></mat-divider>
+
+        <mat-card-content class="tags_logs" [ngClass]="{ 'in-active': log.tag == null && !log.isTeamManager }">
+          <app-tags [hasPermission]="permission" [idLog]="logId" [tags]="log ? log.tag : []"></app-tags>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <!-- comment -->
+        <p class="label">{{ 'common.comments' | translate }}</p>
+        <ng-container *ngFor="let comment of comments; let i = index">
+          <h5 class="mt-3 label mb-0">
+            <b>{{ comment.userName }} </b> {{ dateTime(comment.createdAt) }}
+          </h5>
+          <p *ngIf="!editMode || i != number">
+            {{ comment.comment }}
+          </p>
+
+          <div class="mb-0">
+            <mat-form-field appearance="standard" class="no-label" *ngIf="editMode && number === i">
+              <input
+                value="{{ comment.comment }}"
+                matInput
+                placeholder="{{ 'common.write_your_comment' | translate }}"
+                (change)="onChangeEdit($event, comment.id)"
+              />
+              <ng-container matSuffix>
+                <span class="d-flex">
+                  <button mat-icon-button (click)="close()">
+                    <mat-icon matSuffix>clear</mat-icon>
+                  </button>
+                  <mat-spinner matSuffix class="spinner" [diameter]="23" *ngIf="isLoadingEdit"></mat-spinner>
+                </span>
+              </ng-container>
+            </mat-form-field>
+          </div>
+
+          <div class="d-flex mb-3">
+            <ng-container *ngIf="comment.userId == authService.currentUser?.id">
+              <a *ngIf="!editMode || i != number" class="mr-2" (click)="onEditComment(i)">
+                {{ 'common.edit' | translate }}
+              </a>
+              <a *ngIf="!editMode || i != number" (click)="deleteComment(comment.id)">
+                {{ 'common.delete' | translate }}
+              </a>
+            </ng-container>
+          </div>
+          <div>
+            <mat-divider></mat-divider>
+          </div>
+        </ng-container>
+
+        <mat-form-field appearance="standard" class="mt-3">
+          <input matInput placeholder="{{ 'common.write_your_comment' | translate }}" (change)="onChange($event)" />
+          <mat-spinner matSuffix class="spinner" [diameter]="23" *ngIf="isLoading"></mat-spinner>
+        </mat-form-field>
+      </mat-card>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<div mat-dialog-actions [ngClass]="'d-flex flex-row-reverse'">
+  <a mat-button (click)="onDismiss()" class="mx-2 text-decoration-none">
+    {{ 'common.close' | translate }}
+  </a>
+</div>

@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem 0;
+
+  .padding-page {
+    padding: 0;
+  }
+
+  .page-detail-wrapper {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+}

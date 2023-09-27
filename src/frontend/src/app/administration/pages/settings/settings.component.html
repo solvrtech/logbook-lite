@@ -1,0 +1,52 @@
+<app-page
+  [title]="'title.settings'"
+  [hasTitle]="pageState.state != 'loaded' ? false : true"
+  [message]="pageState.message ? pageState.message : ''"
+  [returnUrl]="pageState.returnUrl"
+  [state]="pageState.state"
+  [queryParams]="queryParams"
+  [breadCrumbs]="[]"
+></app-page>
+<ng-container *ngIf="showPageSetting">
+  <mat-divider></mat-divider>
+  <mat-tab-group
+    [selectedIndex]="selectedIndex"
+    animationDuration="0ms"
+    class="tab-responsive tab-top"
+    [disableRipple]="true"
+  >
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="fs-6 tab-icon" matTooltip="{{ 'common.general' | translate }}">
+          <i class="bi bi-house-gear-fill"></i>
+        </div>
+        <div class="text-label">{{ 'common.general' | translate }}</div>
+      </ng-template>
+      <div class="inner-card col-12 my-3">
+        <app-general-settings></app-general-settings>
+      </div>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="fs-6 tab-icon" matTooltip="{{ 'common.security' | translate }}">
+          <i class="bi bi-shield-lock-fill"></i>
+        </div>
+        <div class="text-label">{{ 'common.security' | translate }}</div>
+      </ng-template>
+      <div class="inner-card col-12 my-3">
+        <app-security-settings></app-security-settings>
+      </div>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="fs-6 tab-icon" matTooltip="{{ 'common.emails' | translate }}">
+          <i class="bi bi-envelope-fill"></i>
+        </div>
+        <div class="text-label">{{ 'common.emails' | translate }}</div>
+      </ng-template>
+      <div class="inner-card col-12 my-3">
+        <app-mail-setting [subtitle]="'setting.global_setting_subtitle'"></app-mail-setting>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</ng-container>

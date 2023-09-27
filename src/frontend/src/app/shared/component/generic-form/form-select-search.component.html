@@ -1,0 +1,38 @@
+<mat-form-field appearance="standard" [ngClass]="fieldClasses">
+  <mat-label *ngIf="label && label.length > 0">{{ label | translate }}</mat-label>
+  <mat-select [formControl]="control" [required]="isRequired" (selectionChange)="onChange($event)">
+    <mat-option *ngIf="useSearch">
+      <ngx-mat-select-search
+        [formControl]="searchFormControl"
+        [searching]="searching"
+        [placeholderLabel]="'common.search' | translate"
+        [noEntriesFoundLabel]="'common.no_results_found' | translate"
+      ></ngx-mat-select-search>
+    </mat-option>
+    <mat-select-trigger *ngIf="options && options.length && options[0].icon">
+      <ng-container *ngIf="getDropdownWithIcon(control.value); let controlValue">
+        <mat-icon [ngStyle]="controlValue.iconStyle" style="position: relative; top: 6px; margin-right: 5px">
+          {{ controlValue.icon }}
+        </mat-icon>
+        {{ controlValue.description | translate }}
+      </ng-container>
+    </mat-select-trigger>
+    <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option.value">
+      <mat-icon *ngIf="option.icon" [ngStyle]="option?.iconStyle" style="margin-right: 5px">{{ option.icon }}</mat-icon>
+      {{ option.description | translate }}
+    </mat-option>
+  </mat-select>
+  <mat-hint *ngIf="hint">
+    <ng-container *ngIf="link || clickLink">
+      <a [href]="link" *ngIf="link" target="_blank">{{ 'common.read_here' | translate }}</a>
+      <ng-container *ngIf="!link">{{ 'common.read_here' | translate }}</ng-container>
+    </ng-container>
+    <ng-container *ngIf="dialog">
+      <a (click)="onClick($event)">{{ 'app.health.read_here' | translate }}</a>
+    </ng-container>
+    {{ hint | translate }}
+  </mat-hint>
+  <mat-error *ngIf="control?.errors">
+    {{ getErrorString(control.errors) | translate }}
+  </mat-error>
+</mat-form-field>

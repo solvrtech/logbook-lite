@@ -1,0 +1,33 @@
+<app-logo [logo]="appLogo"></app-logo>
+<app-title
+  [title]="title$ | async | translate : { data: dataTitle }"
+  [hasRightSection]="hasRightSection$ | async"
+  [hasTitle]="hasTitle$ | async"
+></app-title>
+<app-breadcrumb [breadCrumb]="breadCrumbs"></app-breadcrumb>
+
+<!-- renders content only if state === 'loaded' -->
+<div class="col-12" *ngIf="state === 'loaded'">
+  <ng-container *ngTemplateOutlet="bodyTemplate"></ng-container>
+</div>
+
+<!-- if error/unauthenticated -->
+<div *ngIf="state === 'error' || state === 'unauthorized' || state === 'restricted_access'" class="row">
+  <div class="error-card col-xl-6 col-12">
+    <mat-card>
+      <mat-card-content>
+        <h3>
+          {{
+            (state === 'unauthorized'
+              ? 'common.unauthorized'
+              : state === 'restricted_access'
+              ? 'common.restricted_access'
+              : 'common.error'
+            ) | translate
+          }}
+        </h3>
+        <p>{{ message | translate }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

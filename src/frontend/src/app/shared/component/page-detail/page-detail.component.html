@@ -1,0 +1,71 @@
+<ng-template #content>
+  <div class="my-3">
+    <div class="row">
+      <div [ngClass]="gridClasses">
+        <mat-card [ngClass]="wrapperClasses">
+          <mat-card-content>
+            <!-- LOADED -->
+            <div *ngIf="state === 'loading'">
+              <div class="spinner">
+                <div class="spinner-box">
+                  <mat-spinner [diameter]="25"></mat-spinner>
+                </div>
+              </div>
+            </div>
+            <!-- LOADED -->
+            <div *ngIf="state === 'loaded'">
+              <!-- renders body template from parent -->
+              <ng-container *ngTemplateOutlet="bodyTemplate"></ng-container>
+            </div>
+
+            <!-- ERROR or UNAUTHORIZED or RESTRICTED ACCESS -->
+            <div *ngIf="state === 'error' || state === 'unauthorized' || state === 'restricted_access'">
+              <h3>
+                {{
+                  (state === 'unauthorized'
+                    ? 'common.unauthorized'
+                    : state === 'restricted_access'
+                    ? 'common.restricted_access'
+                    : 'common.error'
+                  ) | translate
+                }}
+              </h3>
+              <p>{{ message | translate }}</p>
+            </div>
+          </mat-card-content>
+
+          <mat-divider *ngIf="state === 'loaded' && (buttonsTemplate || returnUrl)"></mat-divider>
+
+          <mat-card-actions class="form-buttons" *ngIf="state === 'loaded'">
+            <!-- renders additional buttons from parent -->
+            <ng-container *ngTemplateOutlet="buttonsTemplate"></ng-container>
+            <!-- if no return url, don't show -->
+            <app-back-button *ngIf="returnUrl" [link]="returnUrl" [queryParams]="queryParams"></app-back-button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <ng-container *ngIf="panelClasses">
+        <div [ngClass]="panelClasses">
+          <div *ngIf="state === 'loaded'">
+            <!-- renders body template from parent -->
+            <ng-container *ngTemplateOutlet="panelTemplate"></ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<div *ngIf="!asDialog" [ngClass]="pageClasses">
+  <app-logo [logo]="appLogo"></app-logo>
+  <app-title
+    [title]="title | translate : { data: dataTitle }"
+    [hasNowrap]="hasNowrap$ | async"
+    [hasTitle]="hasTitle"
+  ></app-title>
+  <app-breadcrumb [breadCrumb]="breadCrumbs"></app-breadcrumb>
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</div>
+<div [ngClass]="pageClasses" *ngIf="asDialog">
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</div>

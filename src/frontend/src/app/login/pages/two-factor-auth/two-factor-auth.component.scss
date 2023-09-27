@@ -1,0 +1,35 @@
+@import 'variables.scss';
+:host {
+  .two-factor-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+  }
+
+  .form {
+    width: 450px;
+    text-align: center;
+    background: #ffffff;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    padding: 20px;
+
+    .form-input {
+      width: 10% !important;
+      font-size: 20px;
+
+      mat-form-field {
+        text-align: center;
+      }
+    }
+  }
+
+  .button-timer {
+    display: none;
+  }
+  .timer-color {
+    color: $primary-color;
+  }
+}

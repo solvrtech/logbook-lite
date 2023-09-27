@@ -1,0 +1,347 @@
+@import 'variables.scss';
+// Put common forms styles here
+
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  color: $text-label;
+  font-size: 0.85em;
+}
+
+.small {
+  font-size: 75%;
+}
+
+.title_card {
+  font-size: 1.1em;
+}
+
+mat-card {
+  &.full-height {
+    height: 100%;
+  }
+
+  .card-title {
+    text-transform: uppercase;
+    font-size: 1em;
+    font-family: Consolas, monospace;
+  }
+}
+
+mat-card-actions.form-buttons {
+  display: flex;
+  justify-content: right;
+  flex-direction: row-reverse;
+  margin-bottom: 0 !important;
+  padding-top: 16px !important;
+  margin-right: 1rem;
+}
+
+.mat-card-actions {
+  .mat-button,
+  .mat-raised-button,
+  .mat-stroked-button {
+    margin: 0 0 0 8px !important;
+  }
+
+  &.no-margin {
+    .mat-button,
+    .mat-raised-button,
+    .mat-stroked-button {
+      margin: 0 !important;
+    }
+  }
+}
+
+mat-form-field {
+  line-height: 1.29 !important;
+
+  &.mat-form-field,
+  &.full-width,
+  &.full-width-field,
+  .full-width-field > & {
+    width: 100% !important;
+  }
+
+  &.no-label .mat-form-field-infix {
+    padding-top: 0.2em;
+    padding-bottom: 0.7em;
+  }
+
+  &.no-bottom .mat-form-field-wrapper {
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  &.smaller {
+    font-size: 0.92em;
+  }
+
+  &.no-required-sign {
+    .mat-placeholder-required {
+      display: none;
+    }
+
+    &.required {
+      mat-label:after {
+        display: inline-block;
+        content: '*';
+        padding-left: 0.25em;
+      }
+    }
+  }
+}
+
+// fixed mat-select arrow icon not centered horizontally on appearance=standard
+.mat-form-field-appearance-standard.mat-form-field-has-label
+  .mat-select:not(.mat-select-empty)
+  .mat-select-arrow-wrapper {
+  transform: none !important;
+}
+
+// 100% width except for paginator size per page input text
+mat-paginator mat-form-field.mat-paginator-page-size-select {
+  width: 56px !important;
+}
+
+// datepicker
+.mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-prefix .mat-icon-button,
+.mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-icon-button {
+  top: 4px;
+}
+
+.mat-form-field-suffix,
+.mat-form-field-prefix {
+  .mat-icon-button {
+    font-size: 0.85em !important;
+    width: 2.2em !important;
+    height: 2.2em !important;
+    line-height: 1;
+    color: $suffix-color;
+  }
+
+  .mat-datepicker-toggle-default-icon {
+    width: 1.2rem;
+  }
+}
+
+.mat-form-field-subscript-wrapper {
+  margin-top: 0.3em;
+}
+
+.mat-form-field {
+  &.use-hint.use-hint-max .mat-form-field-wrapper {
+    margin-bottom: 3em;
+
+    @media (max-width: 756px) {
+      margin-bottom: 4.35em !important;
+    }
+  }
+
+  &.use-hint .mat-form-field-wrapper {
+    margin-bottom: 1.35em;
+
+    @media (max-width: 756px) {
+      margin-bottom: 2.4em !important;
+    }
+  }
+
+  &.use-hint-max .mat-form-field-wrapper {
+    margin-bottom: 1.35em;
+  }
+
+  .input-hint-max {
+    background: $hint-max-color;
+    color: white;
+    padding: 4px 7px 2px;
+    border-radius: 5px;
+    margin-bottom: 4px;
+    margin-top: 4px;
+    display: inline-flex;
+  }
+
+  .input-hint {
+    margin-bottom: 2em;
+  }
+
+  // &.use-hint-max .mat-form-field-hint-wrapper {
+  //   flex-direction: row-reverse;
+  // }
+}
+
+app-form-password {
+  .mat-form-field-hint-wrapper {
+    flex-direction: row;
+  }
+}
+
+app-health-status {
+  .mat-form-field-hint-wrapper {
+    flex-direction: row;
+  }
+}
+
+.mat-suffix-btn {
+  margin-right: -0.5em !important;
+}
+
+@media (max-width: 767px) {
+  .responsive-field {
+    display: block !important;
+  }
+}
+
+// long sentence on checkbox breaks the layout
+.mat-checkbox-layout {
+  white-space: pre-line !important;
+  font-size: 14px;
+}
+
+mat-tab-group.bg-light {
+  mat-tab-body {
+    background: #fff;
+  }
+}
+
+.mat-tab-label.tab-danger {
+  color: $danger;
+
+  &.mat-tab-label-active {
+    color: $light-text !important;
+    background-color: $danger !important;
+  }
+}
+
+@media (max-width: 599px) {
+  .mat-toolbar-row,
+  .mat-toolbar-single-row {
+    height: 64px !important;
+  }
+}
+
+// mat-dialog
+.mat-dialog-content {
+  border-top: 1px solid $border-light;
+  border-bottom: 1px solid $border-light;
+
+  &.dialog {
+    background-color: #fcfcfc;
+  }
+  &.main-bg-color {
+    background: $background-main;
+  }
+}
+
+mat-chip.mat-chip.mat-standard-chip {
+  background-color: $primary-color;
+  color: #ececec;
+}
+
+.mat-chip.mat-standard-chip .mat-chip-remove {
+  color: #ececec;
+}
+
+app-tags {
+  .mat-form-field-appearance-standard .mat-form-field-flex {
+    padding-top: 0 !important;
+  }
+}
+
+.no-label {
+  &.mat-form-field-appearance-standard .mat-form-field-flex {
+    padding-top: 0 !important;
+  }
+}
+
+// timepicker
+.timepicker__header,
+.clock-face__number > span.active,
+.clock-face__clock-hand {
+  background-color: $primary-color !important;
+  color: $text-light !important;
+}
+
+.clock-face__clock-hand_minute:before {
+  border-color: $primary-color !important;
+}
+
+button.hint-icon {
+  width: 15px;
+  height: 15px;
+  line-height: 15px;
+  margin-left: 0.5em;
+  color: $suffix-color;
+
+  mat-icon {
+    font-size: 17px;
+    line-height: 15px !important;
+  }
+}
+
+.mat-tooltip {
+  font-size: 0.75rem;
+  line-height: 1.5em;
+  padding: 0.75em 1.5em;
+  max-width: 266px !important;
+}
+
+.spinner {
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1ch;
+}
+
+app-navbar {
+  .mat-progress-spinner circle,
+  .mat-spinner circle {
+    stroke: #ffffff;
+  }
+}
+
+.mat-form-field-suffix {
+  .mat-icon {
+    cursor: pointer;
+  }
+}
+
+.mat-input-element:disabled,
+.mat-form-field-type-mat-native-select.mat-form-field-disabled .mat-form-field-infix::after {
+  color: rgba(0, 0, 0, 1);
+}
+
+.mat-select-disabled .mat-select-value {
+  color: rgba(0, 0, 0, 1);
+}
+
+.mat-slide-toggle.mat-disabled .mat-slide-toggle-label .mat-slide-toggle-content {
+  color: rgba(0, 0, 0, 1);
+}
+
+.mat-slide-toggle.mat-disabled {
+  opacity: 1 !important;
+}
+
+.mat-slide-toggle.mat-disabled .mat-slide-toggle-label .mat-slide-toggle-bar {
+  opacity: 0.38;
+}
+
+.chip-form {
+  margin-top: -14px !important;
+}
+
+ngx-tooltip-content.ngx-charts-tooltip-content.type-tooltip {
+  .tooltip-caret.position-top {
+    border-top-color: white;
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  color: black;
+  background-color: white;
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+}

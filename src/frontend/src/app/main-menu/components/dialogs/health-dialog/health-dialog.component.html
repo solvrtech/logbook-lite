@@ -1,0 +1,116 @@
+<div *ngIf="healthCheck.length > 0">
+  <h3 class="mb-0">
+    <strong>{{ 'common.health-check' | translate }}</strong>
+  </h3>
+  <p class="label">{{ createdAt }}</p>
+</div>
+<div mat-dialog-content class="dialog">
+  <div class="row health-padding mt-3 mb-3">
+    <div class="health-wrapper">
+      <ng-container *ngFor="let healthCheck of healthCheck">
+        <ng-container *ngIf="healthCheck.checkKey !== 'redis'">
+          <mat-card
+            class="health-card-responsive"
+            [ngClass]="
+              healthCheck.meta.cpuLoad
+                ? 'card-grid-column'
+                : databaseVisible && healthCheck.meta.databaseSize
+                ? 'card-grid-row'
+                : ''
+            "
+          >
+            <mat-card-content>
+              <div class="card-content-wrapper">
+                <div class="d-flex">
+                  <a *ngIf="healthCheck.status == 'ok'" mat-icon-button class="icon-button d-inline" color="primary">
+                    <i class="bi bi-check-circle-fill"></i>
+                  </a>
+                  <a *ngIf="healthCheck.status == 'failed'" mat-icon-button class="icon-button d-inline" color="warn">
+                    <i class="bi bi-x-circle-fill"></i>
+                  </a>
+                  <div class="ml-2">
+                    <p class="mb-0">{{ 'health.' + healthCheck.checkKey | translate }}</p>
+                    <p class="label mb-0">
+                      {{ 'health.status' | translate }} {{ 'common.' + healthCheck.status | translate }}
+                    </p>
+                  </div>
+                </div>
+                <ng-container
+                  *ngIf="
+                    healthCheck.meta.cpuLoad ||
+                    healthCheck.meta.memoryUsage != null ||
+                    healthCheck.meta.usedDiskSpace ||
+                    healthCheck.meta.databaseSize
+                  "
+                >
+                  <div
+                    class="d-flex health-meta-flex"
+                    [ngClass]="
+                      healthCheck.meta.databaseSize
+                        ? 'justify-content-end health-item-position-tablet'
+                        : healthCheck.meta.cpuLoad
+                        ? 'cpuload-responsive-item justify-content-around'
+                        : 'justify-content-around health-item-position-tablet'
+                    "
+                  >
+                    <ng-container *ngFor="let cpuload of healthCheck.meta.cpuLoad | keyvalue">
+                      <div class="text-center">
+                        <span class="meta-size">{{ cpuReformatValue(cpuload.value) }}</span>
+                        <p class="label mb-0">{{ 'health.' + cpuload.key | translate }}</p>
+                      </div>
+                    </ng-container>
+
+                    <div
+                      class="text-center"
+                      *ngIf="healthCheck.meta.databaseSize && databaseLength(healthCheck.meta.databaseSize) > 1"
+                    >
+                      <button mat-icon-button matTooltip="{{ 'common.detail' | translate }}" (click)="onClick()">
+                        <mat-icon>fullscreen</mat-icon>
+                      </button>
+                    </div>
+                    <div class="mx-3 text-center" *ngIf="healthCheck.meta.memoryUsage != null">
+                      <span class="meta-size">{{ healthCheck.meta.memoryUsage }}{{ healthCheck.meta.unit }}</span>
+                      <p class="label mb-0">{{ 'health.detail.memoryUsage' | translate }}</p>
+                    </div>
+
+                    <div class="mx-3 text-center" *ngIf="healthCheck.meta.usedDiskSpace">
+                      <span class="meta-size">{{ healthCheck.meta.usedDiskSpace }}{{ healthCheck.meta.unit }}</span>
+                      <p class="label mb-0">{{ 'health.detail.usedDiskSpace' | translate }}</p>
+                    </div>
+
+                    <div
+                      class="text-center"
+                      *ngIf="healthCheck.meta.databaseSize && databaseLength(healthCheck.meta.databaseSize) <= 1"
+                    >
+                      <span class="meta-size"
+                        >{{ healthCheck.meta.databaseSize.default }}{{ healthCheck.meta.unit }}</span
+                      >
+                      <p class="label mb-0">{{ 'health.detail.databaseSize' | translate }}</p>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+              <ng-container *ngIf="databaseVisible && healthCheck.meta.databaseSize">
+                <div class="database-size-wrapper">
+                  <p class="label mb-0">{{ 'health.detail.databaseSize' | translate }} :</p>
+                  <div
+                    class="d-flex database-size-item"
+                    *ngFor="let database of healthCheck.meta.databaseSize | keyvalue"
+                  >
+                    <span class="meta-size">{{ database.value }}{{ healthCheck.meta.unit }}</span>
+                    <p class="label mb-0">{{ database.key }}</p>
+                  </div>
+                </div>
+              </ng-container>
+            </mat-card-content>
+          </mat-card>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions [ngClass]="'d-flex flex-row-reverse'">
+  <a mat-button (click)="onDismiss()" class="mx-2 text-decoration-none">
+    {{ 'common.close' | translate }}
+  </a>
+</div>

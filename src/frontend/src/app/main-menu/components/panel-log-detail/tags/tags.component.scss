@@ -1,0 +1,35 @@
+:host {
+  span {
+    width: 100%;
+  }
+
+  p {
+    width: 100%;
+    margin-right: 10px;
+
+    &.in-active {
+      margin-top: 2rem !important;
+    }
+  }
+  .spinner {
+    width: 29px !important;
+  }
+
+  .tags {
+    margin-top: 2rem !important;
+  }
+
+  .mat-chip.mat-standard-chip.mat-chip-disabled {
+    opacity: 1;
+  }
+
+  .chip-tags {
+    width: 311px !important;
+  }
+
+  .form-chips {
+    .mat-form-field-appearance-standard.mat-form-field-disabled .mat-form-field-underline {
+      display: none;
+    }
+  }
+}

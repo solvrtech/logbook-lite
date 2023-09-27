@@ -1,0 +1,26 @@
+<form [formGroup]="formGroup">
+  <div class="px-3">
+    <p class="mb-0 label" [ngClass]="{ 'mb-2': !hasPermission }">
+      {{ 'common.priority' | translate }}
+    </p>
+    <div class="d-flex align-items-center">
+      <span *ngIf="!editMode">{{ priority ? ('priority.' + priority | translate) : '-' }}</span>
+      <p *ngIf="editMode">
+        <app-form-select-search
+          [useSearch]="false"
+          [options]="priorities"
+          [control]="asFormControl(formGroup.controls['priority'])"
+          (save)="save()"
+        ></app-form-select-search>
+      </p>
+
+      <mat-spinner class="spinner" [diameter]="23" *ngIf="isLoading"></mat-spinner>
+      <a *ngIf="!editMode && hasPermission" mat-icon-button class="button_icon" (click)="onUpdate()">
+        <mat-icon>edit</mat-icon>
+      </a>
+      <button *ngIf="editMode" mat-icon-button class="button_icon" (click)="onClose()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+</form>

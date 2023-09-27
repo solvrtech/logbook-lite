@@ -1,0 +1,65 @@
+<app-page-detail
+  [title]="title ? title : edit ? 'users.edit_user' : 'users.create_user'"
+  [hasTitle]="pageState.state != 'loaded' ? false : true"
+  [returnUrl]="redirectAfterSave ? pageState.returnUrl : ''"
+  [message]="pageState.message ? pageState.message : ''"
+  [state]="pageState.state"
+  [bodyTemplate]="body"
+  [buttonsTemplate]="button"
+  [queryParams]="queryParams"
+  [breadCrumbs]="title ? [] : breadCrumbs"
+></app-page-detail>
+
+<ng-template #body>
+  <form [formGroup]="formGroup">
+    <div class="px-3">
+      <!-- Email -->
+      <app-form-input [label]="'common.email'" [control]="asFormControl(formGroup.controls['email'])"></app-form-input>
+
+      <!-- Name -->
+      <app-form-input [label]="'common.name'" [control]="asFormControl(formGroup.controls['name'])"></app-form-input>
+
+      <!-- role -->
+      <app-form-select-search
+        [control]="asFormControl(formGroup.controls['role'])"
+        [label]="'common.role'"
+        [useSearch]="false"
+        [options]="roles"
+        [hint]="'app.hint.roles'"
+        [link]="roleService.linkRole"
+        [clickLink]="true"
+      ></app-form-select-search>
+
+      <app-form-toggle
+        *ngIf="edit"
+        [checked]="!edit"
+        [fieldClasses]="'mt-3'"
+        [label]="'users.edit_password'"
+        [control]="asFormControl(formGroup.controls['changePassword'])"
+        (valueChanged)="onChangePasswordChanged($event)"
+      ></app-form-toggle>
+
+      <ng-container *ngIf="formGroup.controls['changePassword'].value === true || !edit">
+        <!-- password -->
+        <app-form-password
+          [label]="'common.password'"
+          [control]="asFormControl(formGroup.controls['password'])"
+          [hintMax]="50"
+          [hint]="'users.hint.password'"
+          [errorTranslations]="errorTranslations.password"
+        ></app-form-password>
+
+        <!-- confirm password -->
+        <app-form-password
+          [label]="'common.confirm_password'"
+          [control]="asFormControl(formGroup.controls['confirmPassword'])"
+          [hintMax]="50"
+          [errorTranslations]="errorTranslations.confirmPassword"
+        ></app-form-password>
+      </ng-container>
+    </div>
+  </form>
+</ng-template>
+<ng-template #button>
+  <app-save-button (save)="save()" [disabled]="formGroup.invalid"></app-save-button>
+</ng-template>

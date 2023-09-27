@@ -1,0 +1,35 @@
+<app-page
+  [title]="'title.teams'"
+  [hasTitle]="pageState.state != 'loaded' ? false : true"
+  [message]="pageState.message ? pageState.message : ''"
+  [state]="pageState.state"
+  [bodyTemplate]="body"
+  [breadCrumbs]="[]"
+>
+</app-page>
+<ng-template #body>
+  <app-search
+    #search
+    [fields$]="searchFields$"
+    [fieldColumns]="1"
+    (searchClicked)="table.search($event)"
+    (resetClicked)="table.reset()"
+    [searchDisabled]="dataSource.loading"
+  ></app-search>
+  <mat-card>
+    <mat-card-content>
+      <app-table
+        #table
+        [dataSource]="dataSource"
+        [columns$]="columns$"
+        [rowMenus$]="rowMenus$"
+        [showMenus]="true"
+        [leftButtonsTemplate]="button"
+        [useToolbar]="showCreateButton"
+      ></app-table>
+      <ng-template #button>
+        <app-create-button [link]="'/administration/teams/create'"></app-create-button>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

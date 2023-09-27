@@ -1,0 +1,20 @@
+<app-search
+  #search
+  [fields$]="searchFields$"
+  [fieldColumns]="2"
+  (searchClicked)="table.search($event)"
+  (resetClicked)="table.reset()"
+  [searchDisabled]="dataSource.loading"
+></app-search>
+<mat-card>
+  <mat-card-content>
+    <app-table
+      #table
+      [dataSource]="dataSource"
+      [columns$]="columns$"
+      [rowMenus$]="rowMenus$"
+      [showMenus]="true"
+      [realtimeRefresh]="true"
+    ></app-table>
+  </mat-card-content>
+</mat-card>

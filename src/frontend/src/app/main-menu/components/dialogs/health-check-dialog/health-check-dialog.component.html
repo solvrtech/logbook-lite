@@ -1,0 +1,57 @@
+<h3 mat-dialog-title>
+  <b>{{ 'app.alert.health_check' | translate }}</b>
+</h3>
+<div mat-dialog-content>
+  <p class="mb-0 mt-2">
+    <b>{{ 'app.health_dialog_cache' | translate }}</b>
+  </p>
+  <p class="mb-0">{{ 'app.health_dialog_cache_description' | translate }}</p>
+
+  <p class="mb-0 mt-2">
+    <b>{{ 'app.health_dialog_cpu' | translate }}</b>
+  </p>
+  <p class="mb-0">
+    {{ 'app.health_dialog_cpu_monitor' | translate }}
+    <a [href]="scoutapmLink" target="_blank">{{ 'app.health_dialog_here' | translate }}</a>
+  </p>
+  <p class="mb-0">{{ 'app.health_dialog_default_description' | translate }}</p>
+  <ul>
+    <li>{{ 'app.health_dialog_last_minute' | translate }}</li>
+    <li>{{ 'app.health_dialog_last_5_minutes' | translate }}</li>
+    <li>{{ 'app.health_dialog_last_15_minutes' | translate }}</li>
+  </ul>
+  <p>
+    {{ 'app.health_dialog_alert_conditions' | translate }} {{ 'app.health_dialog_alert_conditions_failed' | translate }}
+  </p>
+
+  <p class="mb-0">
+    <b>{{ 'app.health_dialog_database' | translate }}</b>
+  </p>
+  <p class="mb-0">
+    {{ 'app.health_dialog_database_description' | translate }}
+  </p>
+  <p>
+    {{ 'app.health_dialog_database_description_failed' | translate }}
+  </p>
+
+  <p class="mb-0">
+    <b>{{ 'app.health_dialog_ram' | translate }}</b>
+  </p>
+  <p class="mb-0">{{ 'app.health_dialog_ram_description' | translate }}</p>
+  <p>
+    {{ 'app.health_dialog_ram_conditions' | translate }}
+  </p>
+
+  <p class="mb-0">
+    <b>{{ 'app.health_dialog_used_disk' | translate }}</b>
+  </p>
+  <p class="mb-0">{{ 'app.health_dialog_used_disk_description' | translate }}</p>
+  <p>
+    {{ 'app.health_dialog_used_disk_conditions' | translate }}
+  </p>
+</div>
+<div mat-dialog-actions [ngClass]="'d-flex flex-row-reverse'">
+  <a mat-button (click)="onDismiss()" class="text-decoration-none">
+    {{ 'common.close' | translate }}
+  </a>
+</div>

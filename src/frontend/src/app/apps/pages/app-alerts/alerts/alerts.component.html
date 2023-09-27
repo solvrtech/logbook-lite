@@ -1,0 +1,40 @@
+<app-page
+  [title]="'title.alerts'"
+  [hasTitle]="pageState.state != 'loaded' ? false : true"
+  [appLogo]="appLogo"
+  [dataTitle]="name"
+  [message]="pageState.message ? pageState.message : ''"
+  [state]="pageState.state"
+  [bodyTemplate]="body"
+  [breadCrumbs]="breadcrumb"
+></app-page>
+
+<ng-template #body>
+  <app-search
+    #search
+    [fields$]="searchFields"
+    [fieldColumns]="1"
+    (searchClicked)="table.search($event)"
+    (resetClicked)="table.reset()"
+    [searchDisabled]="dataSource.loading"
+  ></app-search>
+  <mat-card>
+    <mat-card-content>
+      <app-table
+        #table
+        [dataSource]="dataSource"
+        [columns$]="columns"
+        [rowMenus$]="rowMenus"
+        [showMenus]="true"
+        [leftButtonsTemplate]="button"
+        [useToolbar]="hasPermission ? showCreateButton : false"
+      ></app-table>
+      <ng-template #button>
+        <app-create-button
+          *ngIf="hasPermission"
+          [link]="'/main-menu/apps/alert/' + appId + '/create'"
+        ></app-create-button>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

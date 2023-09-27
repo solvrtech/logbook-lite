@@ -1,0 +1,166 @@
+// Custom mat dialog
+.edge-dialog {
+  max-width: 90vw !important;
+  width: 90vw !important;
+
+  .mat-dialog-container {
+    max-width: 90vw !important;
+    width: 90vw !important;
+  }
+
+  .mat-dialog-content {
+    max-height: 85vh;
+  }
+}
+
+.slim-dialog {
+  .mat-dialog-container {
+    padding: 0.5rem;
+    border-radius: 0;
+  }
+
+  .mat-dialog-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    border-bottom: 0;
+    border-top: 0;
+
+    img {
+      max-height: 90vh;
+    }
+  }
+}
+
+.panel-detail-log .mat-dialog-container {
+  background-color: #fafafa;
+}
+
+.mat-menu-panel.messageMenu {
+  min-width: 23rem !important;
+
+  @media only screen and (max-width: 600px) {
+    min-width: 360px !important;
+  }
+}
+
+// dashboard widgets
+.dashboard-widget {
+  font-family: Roboto, 'Helvetica Neue', sans-serif !important;
+
+  .status-row {
+    margin-bottom: 0.5em;
+
+    .status-row-icon {
+      flex: 0 0 25px;
+    }
+
+    .status-row-text-title {
+      font-size: 1.25em;
+    }
+
+    .status-row-subtext {
+      font-size: 1rem;
+    }
+
+    .status-indicator {
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+      border-radius: 1em;
+      vertical-align: middle;
+
+      &.active {
+        background: $success;
+      }
+
+      &.inactive {
+        background: $danger;
+      }
+    }
+  }
+}
+
+// info widget
+.info-widget {
+  // DEFAULT layout
+  &.info-widget-default {
+    height: 100%;
+
+    .mat-card-content {
+      display: flex;
+      flex-direction: column !important;
+      height: 100%;
+    }
+  }
+
+  // INLINE layout
+  &.info-widget-inline {
+    height: 100%;
+
+    .mat-card-content {
+      display: flex;
+      flex-direction: row !important;
+      height: 100%;
+    }
+
+    .info-widget-text {
+      margin-left: auto;
+    }
+  }
+
+  &.with-percentage {
+    .info-widget-title {
+      max-width: 50%;
+    }
+  }
+
+  .info-widget-text {
+    font-size: 1.5rem;
+    text-align: right;
+    margin-top: 0.75rem;
+
+    .decimal {
+      font-size: 1.1rem;
+    }
+  }
+
+  .info-widget-percentage {
+    color: $text-subtitle;
+
+    .arrow-icon {
+      margin-right: 4px;
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border: 0 solid transparent;
+      border-right-width: 6px;
+      border-left-width: 6px;
+
+      &.decreased {
+        border-top: 10px solid $danger;
+      }
+
+      &.increased {
+        border-bottom: 10px solid $success;
+      }
+    }
+  }
+
+  .info-text-item {
+    margin-left: 1.5rem;
+  }
+
+  @media (max-width: 1199px) {
+    &.info-widget-inline {
+      .mat-card-content {
+        flex-direction: column !important;
+      }
+    }
+
+    .info-text-item {
+      margin-left: 0;
+      margin-top: 0.5rem;
+      display: block;
+    }
+  }
+}

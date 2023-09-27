@@ -1,0 +1,49 @@
+<mat-card>
+  <div class="px-3">
+    <mat-card-title class="title_card">{{ 'app.team_title' | translate }}</mat-card-title>
+    <mat-card-subtitle>{{ 'team.subtitle_create' | translate }}</mat-card-subtitle>
+  </div>
+  <mat-card-content>
+    <div class="px-3">
+      <form [formGroup]="formGroup">
+        <div formArrayName="teams">
+          <ng-container *ngFor="let team of formArrayTeams; last as isLast; index as idx; let i = index">
+            <div class="apps_form align-items-center" [formGroupName]="i">
+              <div class="app_form">
+                <app-form-select-server-side
+                  [label]="'common.team_name'"
+                  [options]="teams"
+                  [control]="asFormControl(team.controls['key'])"
+                  [description]="team.controls['desc'].value"
+                  [errorTranslations]="errorTranslations.name"
+                ></app-form-select-server-side>
+              </div>
+
+              <div class="app_button d-flex" *ngIf="hasPermission">
+                <button mat-icon-button color="warn" *ngIf="formArrayTeams.length > 1" (click)="onRemoveTeam(idx)">
+                  <mat-icon>remove_circle</mat-icon>
+                </button>
+                <span
+                  class="member_span"
+                  mat-icon-button
+                  color="warn"
+                  *ngIf="formArrayTeams.length > 1 && !isLast"
+                ></span>
+                <button mat-icon-button color="primary" *ngIf="isLast" (click)="pushTeam.push(initFormGroupTeams())">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </form>
+    </div>
+  </mat-card-content>
+
+  <ng-container *ngIf="hasPermission">
+    <mat-divider></mat-divider>
+    <mat-card-actions align="end" class="form-buttons">
+      <app-save-button (save)="save()" [disabled]="formGroup.invalid"></app-save-button>
+    </mat-card-actions>
+  </ng-container>
+</mat-card>

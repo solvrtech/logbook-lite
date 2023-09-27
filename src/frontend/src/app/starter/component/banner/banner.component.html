@@ -1,0 +1,13 @@
+<ng-container *ngIf="authService.currentUser?.role == role">
+  <div class="banner" [ngClass]="{ 'is-none': close }">
+    <div class="p-2 d-flex align-items-center">
+      <div class="p-2 w-100" [innerHTML]="'header.first_configure_email_smtp' | translate" (click)="onClick()"></div>
+
+      <div class="flex-shrink-1 mx-2">
+        <button mat-icon-button (click)="onClose()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>

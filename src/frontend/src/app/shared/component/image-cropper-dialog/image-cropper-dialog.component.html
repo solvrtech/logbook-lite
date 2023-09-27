@@ -1,0 +1,30 @@
+<h3 mat-dialog-title>{{ 'Logo' | translate }}</h3>
+<div mat-dialog-content>
+  <div class="cropper-wrap">
+    <div class="spinner my-3" *ngIf="!showCropper">
+      <mat-spinner [diameter]="30"></mat-spinner>
+    </div>
+    <p *ngIf="failedImageLoading">{{ 'common.logo.error' | translate }}</p>
+    <image-cropper
+      [imageChangedEvent]="imageChangedEvent"
+      [maintainAspectRatio]="true"
+      [containWithinAspectRatio]="false"
+      [aspectRatio]="aspectRatio"
+      [cropperMinWidth]="cropperMinWidth"
+      [resizeToWidth]="resizeToWidth"
+      [style.display]="showCropper ? null : 'none'"
+      [format]="format"
+      (imageCropped)="imageCropped($event)"
+      (imageLoaded)="imageLoaded()"
+      (loadImageFailed)="loadImageFailed()"
+    ></image-cropper>
+  </div>
+</div>
+<div mat-dialog-actions class="d-flex flex-row-reverse">
+  <button mat-flat-button color="primary" (click)="onConfirm()" class="mx-2">
+    {{ 'common.done' | translate }}
+  </button>
+  <a mat-button class="text-decoration-none" mat-dialog-close>
+    {{ 'common.close' | translate }}
+  </a>
+</div>

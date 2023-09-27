@@ -1,0 +1,24 @@
+<ng-container *ngIf="mode === 'list' && languages.length > 1">
+  <a
+    href="#"
+    *ngFor="let lang of languages"
+    class="lang-select"
+    [class.active]="lang === selectedLangCode"
+    (click)="switchLanguage($event, lang)"
+  >
+    {{ 'language.' + lang | translate }}
+  </a>
+</ng-container>
+
+<ng-container *ngIf="mode === 'menu' && languages.length > 1">
+  <button mat-button [matMenuTriggerFor]="languageDropdown">
+    <mat-icon *ngIf="useIcon">language</mat-icon>
+    {{ selectedLanguage | translate }}
+  </button>
+</ng-container>
+
+<mat-menu #languageDropdown="matMenu" overlapTrigger="false">
+  <button *ngFor="let lang of languages" (click)="switchLanguage($event, lang)" mat-menu-item>
+    {{ 'language.' + lang | translate }}
+  </button>
+</mat-menu>

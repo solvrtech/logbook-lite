@@ -1,0 +1,37 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: #fff;
+  margin: 0;
+  font-family: Karla, "Arial", sans-serif;
+}
+
+hr {
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+.bolder {
+  font-weight: 500 !important;
+}
+
+.mat-card {
+  border-radius: 14px !important;
+}
+
+.table-app-logo {
+  width: 20px;
+  border-radius: 50px;
+  margin-right: 10px;
+}
+
+.inner-card {
+  max-width: 1299px;
+}
