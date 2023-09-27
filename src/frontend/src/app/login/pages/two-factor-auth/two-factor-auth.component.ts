@@ -137,7 +137,7 @@ export class TwoFactorAuthComponent implements OnInit {
   }
 
   /**
-   * Submit token Two-Factor Google Authenticator or email
+   * Submit token Two-Factor email
    */
   submit() {
     if (this.authService.currentTwoFactor == null) {

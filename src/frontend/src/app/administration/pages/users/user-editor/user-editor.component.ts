@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import { takeUntil } from 'rxjs/operators';
-import { SettingService } from 'src/app/administration/services/settings/setting.service';
 import { AuthService } from 'src/app/login/services/auth/auth.service';
 import { BaseSecurePageComponent } from 'src/app/shared/component/bases/base-secure-page.component';
 import { CustomValidators } from 'src/app/shared/helpers/validators.helper';
@@ -79,9 +78,6 @@ export class UserEditorComponent extends BaseSecurePageComponent implements OnIn
   // max length for `password` form control
   maxPasswordLength = environment.userPasswordMaxLength;
 
-  // Google-authenticator
-  mfaAuthentication: boolean = false;
-
   // custom translation strings for specific form control errors
   errorTranslations = {
     password: [{ invalidpassword: 'errors.field.invalid_password' }],
@@ -99,8 +95,7 @@ export class UserEditorComponent extends BaseSecurePageComponent implements OnIn
     private fb: FormBuilder,
     private router: Router,
     private alertService: AlertsService,
-    public authService: AuthService,
-    private settingService: SettingService
+    public authService: AuthService
   ) {
     super(roleService);
     this.initFormGroup();
@@ -119,9 +114,6 @@ export class UserEditorComponent extends BaseSecurePageComponent implements OnIn
   }
 
   onInit(): void {
-    this.mfaAuthentication = this.settingService.securitySetting
-      ? this.settingService.securitySetting.mfaAuthentication ?? false
-      : false;
     // Notes:
     // MyProfileComponent doesn't work correctly if mode selection is executed on parallel with `this.fetchRoles()`.
     // Component's mode selection (of CREATE or EDIT) works when it is executed afterward `this.fetchRoles()`.
@@ -272,8 +264,6 @@ export class UserEditorComponent extends BaseSecurePageComponent implements OnIn
     const observable =
       id === this.authService.currentUser?.id ? this.userService.getCurrentUser() : this.userService.getUserId(id);
 
-    if (id === this.authService.currentUser?.id) this.settingAuth();
-
     observable.subscribe({
       next: res => {
         if (res && res.success) {
@@ -288,21 +278,6 @@ export class UserEditorComponent extends BaseSecurePageComponent implements OnIn
         } else {
           this.pageState.state = 'error';
           this.pageState.message = _('error.msg.error_while_loading_user_data');
-        }
-      },
-      error: err => {
-        console.log(err);
-      },
-    });
-  }
-
-  private settingAuth() {
-    this.settingService.getSettingsAll().subscribe({
-      next: res => {
-        if (res && res.success) {
-          this.mfaAuthentication = res.data.securitySetting
-            ? res.data.securitySetting.mfaAuthentication ?? false
-            : false;
         }
       },
       error: err => {
