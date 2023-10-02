@@ -585,7 +585,7 @@ server {
 
 ## Recommended Setup
 
-The basic setup as described in [Chapter I](https://github.com/solvrtech/logbook-lite/new/master?readme=1#basic-setup) is meant for a quick and minimal installation. We strongly recommend the following additional steps and softwares to be used and configured, as they can bring performance enhancement, and to be well prepared to receive many incoming logs data while still being able to send alerts as fast as possible.
+The basic setup as described in [Chapter I](https://github.com/solvrtech/logbook-lite#basic-setup) is meant for a quick and minimal installation. We strongly recommend the following additional steps and softwares to be used and configured, as they can bring performance enhancement, and to be well prepared to receive many incoming logs data while still being able to send alerts as fast as possible.
 
 Our recommendations are:
 
